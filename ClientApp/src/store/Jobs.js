@@ -1,28 +1,28 @@
-﻿const requestWeatherForecastsType = 'REQUEST_WEATHER_FORECASTS';
-const receiveWeatherForecastsType = 'RECEIVE_WEATHER_FORECASTS';
-const initialState = { forecasts: [], isLoading: false };
+﻿const requestJobsType = 'REQUEST_JOBS';
+const receiveJobsType = 'RECEIVE_JOBS';
+const initialState = { jobs: [], isLoading: false };
 
 export const actionCreators = {
-  requestWeatherForecasts: startDateIndex => async (dispatch, getState) => {    
-    if (startDateIndex === getState().weatherForecasts.startDateIndex) {
+  requestJobs: startDateIndex => async (dispatch, getState) => {    
+    if (startDateIndex === getState().jobs.startDateIndex) {
       // Don't issue a duplicate request (we already have or are loading the requested data)
       return;
     }
 
-    dispatch({ type: requestWeatherForecastsType, startDateIndex });
+    dispatch({ type: requestJobsType, startDateIndex });
 
-    const url = `api/Home/Jobs`;
+    const url = `api/Home/Jobs?startDateIndex=${startDateIndex}`;
     const response = await fetch(url);
-    const forecasts = await response.json();
+    const jobs = await response.json();
 
-    dispatch({ type: receiveWeatherForecastsType, startDateIndex, forecasts });
+    dispatch({ type: receiveJobsType, startDateIndex, jobs });
   }
 };
 
 export const reducer = (state, action) => {
   state = state || initialState;
 
-  if (action.type === requestWeatherForecastsType) {
+  if (action.type === requestJobsType) {
     return {
       ...state,
       startDateIndex: action.startDateIndex,
@@ -30,11 +30,11 @@ export const reducer = (state, action) => {
     };
   }
 
-  if (action.type === receiveWeatherForecastsType) {
+  if (action.type === receiveJobsType) {
     return {
       ...state,
       startDateIndex: action.startDateIndex,
-      forecasts: action.forecasts,
+      jobs: action.jobs,
       isLoading: false
     };
   }

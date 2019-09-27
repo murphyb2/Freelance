@@ -7,7 +7,7 @@ namespace Freelance.Models
 {
     public class JobModel
     {
-        // Properties
+        # region Properties
         private string _jobTitle;
         public string JobTitle
         {
@@ -29,11 +29,11 @@ namespace Freelance.Models
             set { _location = value; }
         }
 
-        private int _compensation;
-        public int Compensation
+        private int _totalCompensation;
+        public int TotalCompensation
         {
-            get { return _compensation; }
-            set { _compensation = value; }
+            get { return _totalCompensation; }
+            set { _totalCompensation = value; }
         }
 
         private DateTime _startDate;
@@ -49,19 +49,23 @@ namespace Freelance.Models
             get { return _endDate; }
             set { _endDate = value; }
         }
+        #endregion
 
-        public JobModel(string jobTitle, string companyName, string location, int compensation, DateTime startDate, DateTime endDate)
+        #region Constructor
+        // Parameterless, base constructor allows Dapper to function properly
+        public JobModel() : base() { }
+        public JobModel(string jobTitle, string companyName, string location, int totalCompensation, DateTime startDate, DateTime endDate)
         {
             this.JobTitle = jobTitle;
             this.CompanyName = companyName;
             this.Location = location;
-            this.Compensation = compensation;
+            this.TotalCompensation = totalCompensation;
             this.StartDate = startDate;
             this.EndDate = endDate;
 
             // Insert into database..?
             // Associate with user..?
         }
-
+        #endregion
     }
 }
