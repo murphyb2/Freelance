@@ -31,9 +31,7 @@ class FetchJobs extends Component {
         <h1>Jobs</h1>
         <p>These are the jobs you've completed this year</p>
             {/*renderAddJobButton(this.props)*/}
-            <Button variant="secondary" onClick="{renderAddJobForm()}">Add Job</Button>
-            <AddJob />
-            <AddJobButton/>
+        <AddJob/>
         {renderJobsTable(this.props)}
         {renderPagination(this.props)}
       </div>
@@ -81,49 +79,7 @@ function renderPagination(props) {
   </p>;
 }
 
-function AddJobButton() {
-    const [show, setShow] = useState(false);
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);   
-    return (
-        <>
-            <Button variant="primary" onClick={handleShow}>
-                Launch demo modal
-            </Button>
-
-            <Modal show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    Woohoo, you're reading this text in a modal!
-                    <Form>
-                        {/*
-                         Install prop-types to use here
-                         Need to have:
-                            Job Title
-                            Comapny Name
-                            Location
-                            Total Compensation
-                            Start Date
-                            End Date
-
-                         */}
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={handleClose}>
-                        Save Changes
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        </>
-    );
-}
 
 export default connect(
   state => state.jobs,

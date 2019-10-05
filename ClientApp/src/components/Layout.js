@@ -1,9 +1,11 @@
 import React from 'react';
-import { Col, Grid, Row } from 'react-bootstrap';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import NavMenu from './NavMenu';
 
 export default props => (
-  <Grid fluid>
+  <Container fluid>
     <Row>
       <Col sm={3}>
         <NavMenu />
@@ -12,5 +14,5 @@ export default props => (
         {props.children}
       </Col>
     </Row>
-  </Grid>
+  </Container>
 );
