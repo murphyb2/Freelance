@@ -4,6 +4,8 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import TopNavBar from "./TopNavBar";
 
+import { Link, NavLink } from "react-router-dom";
+
 export default props => (
   <>
     <TopNavBar />
