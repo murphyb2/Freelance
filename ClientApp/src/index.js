@@ -30,12 +30,9 @@ class App extends Component {
         <Router>
           <Layout>
             <Route exact path="/" component={Home} />
-            <Route exact path="/counter" component={Counter} />
-            <Route
-              exact
-              path="/fetchjobs/:startDateIndex?"
-              component={FetchJobs}
-            />
+            <Route path="/counter" component={Counter} />
+            {/* <Route path="/jobs/:startDateIndex?" component={FetchJobs} /> */}
+            <Route path="/jobs" component={FetchJobs} />
           </Layout>
         </Router>
       </Provider>

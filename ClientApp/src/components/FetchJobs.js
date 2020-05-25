@@ -1,68 +1,86 @@
-import React, { Component, useState } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { actionCreators } from '../store/Jobs';
-import { Modal, Form, Button } from 'react-bootstrap';
-import AddJob from './AddJob.js'
+import React, { Component, useEffect } from "react";
+import { bindActionCreators } from "redux";
+import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import { actionCreators } from "../store/Jobs";
+import { Modal, Form, Button } from "react-bootstrap";
+import AddJob from "./AddJob.js";
 
-
-class FetchJobs extends Component {
+const FetchJobs = () => {
   //state = {
   //          modalShow: false,
   //          setModalShow: false
   //};
 
-  componentWillMount() {
-    // This method runs when the component is first added to the page
-    const startDateIndex = parseInt(this.props.match.params.startDateIndex, 10) || 0;
-    this.props.requestJobs(startDateIndex);
-  }
+  const dispatch = useDispatch();
+  const jobList = useSelector((state) => state.jobs);
+  const boundActionCreators = bindActionCreators(
+    actionCreators.requestJobs,
+    dispatch
+  );
 
-  componentWillReceiveProps(nextProps) {
-    // This method runs when incoming props (e.g., route params) change
-    const startDateIndex = parseInt(nextProps.match.params.startDateIndex, 10) || 0;
-    this.props.requestJobs(startDateIndex);
-  }
-    
-  render() {
+  useEffect(() => {
+    dispatch(boundActionCreators);
+    // console.log("request jobs");
+    // dispatch(actionCreators.requestJobs);
+  }, []);
+
+  console.log("job list: " + jobList.jobs);
+
+  if (!jobList.isLoading) {
     return (
       <div>
         <h1>Jobs</h1>
         <p>These are the jobs you've completed this year</p>
-            {/*renderAddJobButton(this.props)*/}
-        <AddJob/>
-        {renderJobsTable(this.props)}
-        {renderPagination(this.props)}
+        {/*renderAddJobButton(this.props)*/}
+        <AddJob />
+        {/* {renderJobsTable(this.props)} */}
+        {renderJobsTable(jobList)}
+        {/* {renderPagination(startDateIndex)} */}
       </div>
     );
   }
-}
-
-function renderJobsTable(props) {
   return (
-    <table className='table'>
+    <div>
+      <h1>Jobs</h1>
+      <p>These are the jobs you've completed this year</p>
+      <h2>Loading...</h2>
+    </div>
+  );
+};
+
+function renderJobsTable(jobList) {
+  return (
+    <table className="table">
       <thead>
         <tr>
-          <th>Start Date</th>
-          <th>End Date</th>
-          <th>Job Title</th>
-          <th>Company</th>
-          <th>Location</th>
-          <th>Total Compensation</th>
+          <th>employer</th>
+          <th>jobTitle</th>
+          <th>location</th>
+          <th>compensation</th>
+          <th>startDate</th>
+          <th>endDate</th>
+          <th>paid</th>
+          <th>dateInvoiced</th>
+          <th>rate</th>
+          <th>hoursWorked</th>
         </tr>
       </thead>
       <tbody>
-        {props.jobs.map(job =>
-          <tr key={job.startDate}>
+        {jobList.jobs.map((job) => (
+          <tr key={job.id}>
+            <td>{job.employer}</td>
+            <td>{job.jobTitle}</td>
+            <td>{job.location}</td>
+            <td>{job.compensation}</td>
             <td>{job.startDate}</td>
             <td>{job.endDate}</td>
-            <td>{job.jobTitle}</td>
-            <td>{job.companyName}</td>
-            <td>{job.location}</td>
-            <td>{job.totalCompensation}</td>
+            <td>{job.paid}</td>
+            <td>{job.dateInvoiced}</td>
+            <td>{job.rate}</td>
+            <td>{job.hoursWorked}</td>
           </tr>
-        )}
+        ))}
       </tbody>
     </table>
   );
@@ -72,16 +90,27 @@ function renderPagination(props) {
   const prevStartDateIndex = (props.startDateIndex || 0) - 5;
   const nextStartDateIndex = (props.startDateIndex || 0) + 5;
 
-  return <p className='clearfix text-center'>
-    <Link className='btn btn-default pull-left' to={`/fetchjobs/${prevStartDateIndex}`}>Previous</Link>
-    <Link className='btn btn-default pull-right' to={`/fetchjobs/${nextStartDateIndex}`}>Next</Link>
-    {props.isLoading ? <span>Loading...</span> : []}
-  </p>;
+  return (
+    <p className="clearfix text-center">
+      <Link
+        className="btn btn-default pull-left"
+        to={`/jobs/${prevStartDateIndex}`}
+      >
+        Previous
+      </Link>
+      <Link
+        className="btn btn-default pull-right"
+        to={`/jobs/${nextStartDateIndex}`}
+      >
+        Next
+      </Link>
+      {props.isLoading ? <span>Loading...</span> : []}
+    </p>
+  );
 }
 
-
-
-export default connect(
-  state => state.jobs,
-  dispatch => bindActionCreators(actionCreators, dispatch)
-)(FetchJobs);
+// export default connect(
+//   (state) => state.jobs,
+//   (dispatch) => bindActionCreators(actionCreators, dispatch)
+// )(FetchJobs);
+export default FetchJobs;

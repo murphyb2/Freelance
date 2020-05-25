@@ -4,33 +4,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using Freelance.Models;
 using Microsoft.AspNetCore.Mvc;
-using MySql.Data.MySqlClient;
-using Dapper;
+using FreelanceDataAccess;
 
 namespace Freelance.Controllers
 {
+    [ApiController]
     [Route("api/[controller]")]
-    public class HomeController : Controller
+    public class HomeController : ControllerBase
     {
+        private IReadOnlyCollection<Job> jobs { get; set; }
+        
         [HttpGet("[action]")]
-        public IEnumerable<JobModel> Jobs()
+        public IReadOnlyCollection<Job> Jobs(int startDateIndex)
         {
-            List<JobModel> jobs;
 
-            string sql = $@"SELECT * FROM freelance.jobs";
-            using(var con = new MySqlConnection("Server=localhost;User ID=root;Password=ecEEn7h3m$C8OCR;Database=freelance"))
-            {
-                jobs = con.Query<JobModel>(sql).ToList();
-            }
-            
-            //DateTime start = new DateTime(2019, 05, 29);
-            //DateTime end = new DateTime(2019, 09, 09);
-
-            //List<JobModel> jobs = new List<JobModel>
-            //{
-            //    new JobModel("Costume PA", "Sleep No More", "Manhattan, NYC", 2210, start, end),
-            //    new JobModel("Costume PA", "The Flight Attendant", "Brooklyn, NYC", 4106, start, end),
-            //};
+            var da = new FreelanceDatabase();
+            jobs = da.FetchJobList<Job>();
             
             return jobs;
         }
