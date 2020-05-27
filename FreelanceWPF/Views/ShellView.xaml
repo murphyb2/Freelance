@@ -1,0 +1,46 @@
+﻿<Window x:Class="FreelanceWPF.Views.ShellView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FreelanceWPF.Views"
+        mc:Ignorable="d"
+        Title="Freelance" Height="450" Width="800"
+        WindowState="Maximized">
+    
+        <DockPanel>
+            <Menu DockPanel.Dock="Top" FontSize="14">
+
+                <MenuItem Padding="10,5" Header="_File"/>
+                <MenuItem Header="_Options"/>
+                <MenuItem Header="_Login"/>
+                <MenuItem Header="_About">
+                    <MenuItem Header="_Github" x:Name="GoGithub">
+                        <MenuItem.Icon>
+                            <Image Source="../Resources/Icons/github.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+            </Menu>
+
+            <!--Sidebar-->
+            <StackPanel DockPanel.Dock="Left"
+                        Background="LightCoral">
+
+                <Label Margin="50,10" 
+                       VerticalContentAlignment="Center" 
+                       Content="Job Tracker"
+                       FontWeight="Bold"
+                       FontSize="20"/>
+
+                <Button Height="50"
+                        x:Name="AddJob" Content="Add Job"
+                        FontSize="14"
+                        FontWeight="SemiBold"/>
+            </StackPanel>
+
+            <ContentControl Margin="30" x:Name="ActiveItem"/>
+
+        </DockPanel>
+
+</Window>

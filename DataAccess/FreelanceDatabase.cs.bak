@@ -1,0 +1,109 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Dapper;
+using MySql.Data.MySqlClient;
+
+namespace FreelanceDataAccess
+{
+    public class FreelanceDatabase
+    {
+        public interface IJob
+        {
+            string JobTitle { get; set; }
+
+            string Employer { get; set; }
+
+            string Location { get; set; }
+
+            int Compensation { get; set; }
+
+            DateTime StartDate { get; set; }
+
+            DateTime EndDate { get; set; }
+
+            string Id { get; set; }
+        }
+        public List<IJob> FetchJobList()
+        {
+            // Retrieve all the jobs in the database
+
+            List<IJob> jobs;
+
+            string sql = $@"SELECT * FROM freelance.jobs WHERE Active = true";
+
+            try
+            {
+                using (var con =
+                    new MySqlConnection("Server=localhost;User ID=root;Password=ecEEn7h3m$C8OCR;Database=freelance"))
+                {
+                    jobs = con.Query<IJob>(sql).ToList();
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                jobs = new List<IJob>();
+            }
+
+
+            return new List<IJob>(jobs);
+        }
+
+        public bool AddJob(IJob job)
+        {
+            // Insert new job into database
+            string sql = $@"INSERT INTO freelance.jobs (Employer, JobTitle, Location, Compensation, StartDate, EndDate, Id) 
+                            Values (@Employer, @JobTitle, @Location, @Compensation, @StartDate, @EndDate, @Id)";
+            int affectedRows = 0;
+            try
+            {
+                using (var con =
+                    new MySqlConnection("Server=localhost;User ID=root;Password=ecEEn7h3m$C8OCR;Database=freelance"))
+                {
+                    affectedRows = con.Execute(sql, new
+                    {
+                        Employer = job.Employer,
+                        JobTitle = job.JobTitle,
+                        Location = job.Location,
+                        Compensation = job.Compensation,
+                        StartDate = job.StartDate,
+                        EndDate = job.EndDate,
+                        Id = job.Id
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return affectedRows > 0;
+        }
+
+        public bool DeleteJob(string id)
+        {
+            // Removes a job from the database given a primary key/job id
+            string sql = $@"UPDATE freelance.jobs SET Active = false WHERE Id = @Id";
+
+            int affectedRows = 0;
+
+            try
+            {
+                using (var con =
+                        new MySqlConnection("Server=localhost;User ID=root;Password=ecEEn7h3m$C8OCR;Database=freelance"))
+                {
+                    affectedRows = con.Execute(sql, new { Id = id });
+
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return affectedRows > 0;
+        }
+    }
+}

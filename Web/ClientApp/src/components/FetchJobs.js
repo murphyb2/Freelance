@@ -77,10 +77,10 @@ function renderJobsTable(jobList) {
                 currency: "USD",
               }).format(job.compensation)}
             </td>
-            <td>{new Intl.DateTimeFormat("en-US").format(job.startDate)}</td>
-            <td>{job.endDate}</td>
+            <td>{new Date(job.startDate).toLocaleDateString()}</td>
+            <td>{new Date(job.endDate).toLocaleDateString()}</td>
             <td>{job.paid ? "Yes" : "No"}</td>
-            <td>{job.dateInvoiced}</td>
+            <td>{new Date(job.dateInvoiced).toLocaleDateString()}</td>
             <td>{job.rate}</td>
             <td>{job.hoursWorked}</td>
           </tr>
