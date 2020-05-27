@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from "react";
+import * as React from "react";
 import { bindActionCreators } from "redux";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
@@ -19,10 +19,8 @@ const FetchJobs = () => {
     dispatch
   );
 
-  useEffect(() => {
+  React.useEffect(() => {
     dispatch(boundActionCreators);
-    // console.log("request jobs");
-    // dispatch(actionCreators.requestJobs);
   }, []);
 
   console.log("job list: " + jobList.jobs);
@@ -54,16 +52,16 @@ function renderJobsTable(jobList) {
     <table className="table">
       <thead>
         <tr>
-          <th>employer</th>
-          <th>jobTitle</th>
-          <th>location</th>
-          <th>compensation</th>
-          <th>startDate</th>
-          <th>endDate</th>
-          <th>paid</th>
-          <th>dateInvoiced</th>
-          <th>rate</th>
-          <th>hoursWorked</th>
+          <th>Employer</th>
+          <th>Job Title</th>
+          <th>Location</th>
+          <th>Compensation</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Paid</th>
+          <th>Date Invoiced</th>
+          <th>Rate</th>
+          <th>Hours Worked</th>
         </tr>
       </thead>
       <tbody>
@@ -72,10 +70,16 @@ function renderJobsTable(jobList) {
             <td>{job.employer}</td>
             <td>{job.jobTitle}</td>
             <td>{job.location}</td>
-            <td>{job.compensation}</td>
-            <td>{job.startDate}</td>
+            {/* <td>{job.compensation}</td> */}
+            <td>
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+              }).format(job.compensation)}
+            </td>
+            <td>{new Intl.DateTimeFormat("en-US").format(job.startDate)}</td>
             <td>{job.endDate}</td>
-            <td>{job.paid}</td>
+            <td>{job.paid ? "Yes" : "No"}</td>
             <td>{job.dateInvoiced}</td>
             <td>{job.rate}</td>
             <td>{job.hoursWorked}</td>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Freelance.Models;
@@ -19,8 +20,8 @@ namespace Freelance.Controllers
         {
 
             var da = new FreelanceDatabase();
-            jobs = da.FetchJobList<Job>();
-            
+            jobs = da.FetchJobList<Job>().OrderByDescending(x => x.EndDate).ToList();
+
             return jobs;
         }
     }
