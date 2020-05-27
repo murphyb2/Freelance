@@ -1,17 +1,14 @@
 //import 'bootstrap/dist/css/bootstrap.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
-import React, { Component } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { createBrowserHistory } from "history";
 import configureStore from "./store/configureStore";
+import App from "./App";
 import registerServiceWorker from "./registerServiceWorker";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import Layout from "./components/Layout";
-import Home from "./components/Home";
-import Counter from "./components/Counter";
-import FetchJobs from "./components/FetchJobs";
+import { BrowserRouter as Router } from "react-router-dom";
 
 // Create browser history to use in the Redux store
 const baseUrl = document.getElementsByTagName("base")[0].getAttribute("href");
@@ -23,23 +20,13 @@ const store = configureStore(history, initialState);
 
 const rootElement = document.getElementById("root");
 
-class App extends Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <Router>
-          <Layout>
-            <Route exact path="/" component={Home} />
-            <Route path="/counter" component={Counter} />
-            {/* <Route path="/jobs/:startDateIndex?" component={FetchJobs} /> */}
-            <Route path="/jobs" component={FetchJobs} />
-          </Layout>
-        </Router>
-      </Provider>
-    );
-  }
-}
-
-ReactDOM.render(<App />, rootElement);
+ReactDOM.render(
+  <Provider store={store}>
+    <Router>
+      <App />
+    </Router>
+  </Provider>,
+  rootElement
+);
 
 registerServiceWorker();

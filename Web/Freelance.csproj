@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <Reference Include="FreelanceDataAccess">
-      <HintPath>..\..\FreelanceDataAccess\bin\Debug\netstandard2.0\FreelanceDataAccess.dll</HintPath>
+      <HintPath>..\DataAccess\bin\Debug\netstandard2.0\FreelanceDataAccess.dll</HintPath>
     </Reference>
   </ItemGroup>
 
