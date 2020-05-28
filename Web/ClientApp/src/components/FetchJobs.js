@@ -2,7 +2,7 @@ import * as React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { actionCreators } from "../store/Jobs";
-import { Modal, Form, Button } from "react-bootstrap";
+// import { Modal, Form, Button } from "react-bootstrap";
 import AddJob from "./AddJob.js";
 
 const FetchJobs = () => {

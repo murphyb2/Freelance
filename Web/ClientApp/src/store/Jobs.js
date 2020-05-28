@@ -6,6 +6,10 @@ export const actionCreators = {
   requestJobs: (startDateIndex) => async (dispatch, getState) => {
     // requestJobs: () => async (dispatch, getState) => {
     const appState = getState();
+
+    console.log("request jobs action creators");
+    console.log(`given index: ${startDateIndex}`);
+    console.log(`current index: ${appState.jobs.startDateIndex}`);
     if (
       appState ||
       appState.jobs ||
@@ -15,8 +19,6 @@ export const actionCreators = {
       // console.log("not issuing");
       // return;
 
-      console.log("request jobs action creators");
-      console.log(startDateIndex);
       // console.log(dispatch);
       dispatch({ type: requestJobsType, startDateIndex });
       // dispatch({ type: requestJobsType });
@@ -25,8 +27,6 @@ export const actionCreators = {
       // const url = `api/Home/Jobs`;
       const response = await fetch(url);
       const jobs = await response.json();
-      console.log("response");
-      console.log(response);
 
       // dispatch({ type: receiveJobsType, jobs });
       dispatch({ type: receiveJobsType, startDateIndex, jobs });
