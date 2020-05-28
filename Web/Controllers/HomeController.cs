@@ -9,20 +9,36 @@ using FreelanceDataAccess;
 
 namespace Freelance.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
+    [ApiController]
     public class HomeController : ControllerBase
     {
-        private IReadOnlyCollection<Job> jobs { get; set; }
-        
+        private ReadOnlyCollection<Job> jobs { get; set; }
+
         [HttpGet("[action]")]
-        public IReadOnlyCollection<Job> Jobs(int startDateIndex)
+        public IReadOnlyCollection<Job> Jobs()
+        //[HttpGet("Jobs")]
+        //public IReadOnlyCollection<Job> Jobs()
         {
 
             var da = new FreelanceDatabase();
-            jobs = da.FetchJobList<Job>().OrderByDescending(x => x.EndDate).ToList();
+            jobs = da.FetchJobList<Job>().OrderByDescending(x => x.EndDate).ToList().AsReadOnly();
 
             return jobs;
         }
+        
+        [HttpGet("[action]/{startDateIndex}")]
+        public IReadOnlyCollection<Job> Jobs(int startDateIndex)
+        //[HttpGet("Jobs")]
+        //public IReadOnlyCollection<Job> Jobs()
+        {
+
+            var da = new FreelanceDatabase();
+            jobs = da.FetchJobList<Job>().OrderByDescending(x => x.EndDate).ToList().AsReadOnly();
+
+            return jobs;
+        }
+
+
     }
 }

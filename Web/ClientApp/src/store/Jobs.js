@@ -1,31 +1,36 @@
 ﻿const requestJobsType = "REQUEST_JOBS";
 const receiveJobsType = "RECEIVE_JOBS";
-const initialState = { jobs: [], isLoading: false, startDateIndex: 0 };
+const initialState = { jobs: [], isLoading: false, startDateIndex: 123 };
 
 export const actionCreators = {
-  // requestJobs: (startDateIndex) => async (dispatch, getState) => {
-  requestJobs: () => async (dispatch, getState) => {
+  requestJobs: (startDateIndex) => async (dispatch, getState) => {
+    // requestJobs: () => async (dispatch, getState) => {
     const appState = getState();
     if (
-      !appState ||
-      !appState.jobs
-      // || startDateIndex === appState.jobs.startDateIndex
+      appState ||
+      appState.jobs ||
+      startDateIndex !== appState.jobs.startDateIndex
     ) {
       // Don't issue a duplicate request (we already have or are loading the requested data)
-      return;
+      // console.log("not issuing");
+      // return;
+
+      console.log("request jobs action creators");
+      console.log(startDateIndex);
+      // console.log(dispatch);
+      dispatch({ type: requestJobsType, startDateIndex });
+      // dispatch({ type: requestJobsType });
+
+      const url = `api/Home/Jobs/${startDateIndex}`;
+      // const url = `api/Home/Jobs`;
+      const response = await fetch(url);
+      const jobs = await response.json();
+      console.log("response");
+      console.log(response);
+
+      // dispatch({ type: receiveJobsType, jobs });
+      dispatch({ type: receiveJobsType, startDateIndex, jobs });
     }
-
-    console.log("request jobs action creators");
-    // dispatch({ type: requestJobsType, startDateIndex });
-    dispatch({ type: requestJobsType });
-
-    // const url = `api/Home/Jobs?startDateIndex=${startDateIndex}`;
-    const url = `api/Home/Jobs?startDateIndex=1`;
-    const response = await fetch(url);
-    const jobs = await response.json();
-
-    // dispatch({ type: receiveJobsType, startDateIndex, jobs });
-    dispatch({ type: receiveJobsType, jobs });
   },
 };
 
@@ -34,6 +39,7 @@ export const reducer = (state, action) => {
 
   if (action.type === requestJobsType) {
     console.log("request jobs type");
+    console.log(action.startDateIndex);
     return {
       ...state,
       startDateIndex: action.startDateIndex,
@@ -43,6 +49,7 @@ export const reducer = (state, action) => {
 
   if (action.type === receiveJobsType) {
     console.log("receive jobs type");
+    console.log(action.startDateIndex);
     return {
       ...state,
       startDateIndex: action.startDateIndex,
