@@ -11,32 +11,28 @@ namespace Freelance.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HomeController : ControllerBase
+    public class JobController : ControllerBase
     {
-        private ReadOnlyCollection<Job> jobs { get; set; }
+        private readonly ReadOnlyCollection<Job> _jobs;
 
-        [HttpGet("[action]")]
-        public IReadOnlyCollection<Job> Jobs()
-        //[HttpGet("Jobs")]
-        //public IReadOnlyCollection<Job> Jobs()
+        public JobController()
         {
-
             var da = new FreelanceDatabase();
-            jobs = da.FetchJobList<Job>().OrderByDescending(x => x.EndDate).ToList().AsReadOnly();
+            _jobs = da.FetchJobList<Job>().OrderByDescending(x => x.EndDate).ToList().AsReadOnly();
+        }
 
-            return jobs;
+        // api/job
+        [HttpGet]
+        public IReadOnlyCollection<Job> GetJobs()
+        {
+            return _jobs;
         }
         
-        [HttpGet("[action]/{startDateIndex}")]
-        public IReadOnlyCollection<Job> Jobs(int startDateIndex)
-        //[HttpGet("Jobs")]
-        //public IReadOnlyCollection<Job> Jobs()
+        // api/job/{id}
+        [HttpGet("{id}")]
+        public IReadOnlyCollection<Job> GetJobById(string id)
         {
-
-            var da = new FreelanceDatabase();
-            jobs = da.FetchJobList<Job>().OrderByDescending(x => x.EndDate).ToList().AsReadOnly();
-
-            return jobs;
+            return _jobs.Where(x => x.Id == id).ToList().AsReadOnly();
         }
 
 
