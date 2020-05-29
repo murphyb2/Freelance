@@ -23,11 +23,8 @@ namespace Freelance.Controllers
 
         // api/job
         [HttpGet]
-        public IReadOnlyCollection<Job> GetJobs()
-        {
-            return _jobs;
-        }
-        
+        public IReadOnlyCollection<Job> GetJobs() => _jobs;
+
         // api/job/{id}
         [HttpGet("{id}")]
         public IReadOnlyCollection<Job> GetJobById(string id)

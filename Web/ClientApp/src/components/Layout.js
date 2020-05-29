@@ -6,7 +6,7 @@ import TopNavBar from "./TopNavBar";
 
 import { Link, NavLink } from "react-router-dom";
 
-export default props => (
+export default (props) => (
   <>
     <TopNavBar />
     <Container>
