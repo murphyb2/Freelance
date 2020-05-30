@@ -42,7 +42,7 @@ const FetchJobs = () => {
     <div>
       <h1>Jobs</h1>
       <p>These are the jobs you've completed this year</p>
-      <h2>
+      <h2 className="text-center">
         <Spinner animation="grow" />
       </h2>
     </div>
@@ -73,7 +73,6 @@ function renderJobsTable(jobList) {
             <td>{job.employer}</td>
             <td>{job.jobTitle}</td>
             <td>{job.location}</td>
-            {/* <td>{job.compensation}</td> */}
             <td>
               {new Intl.NumberFormat("en-US", {
                 style: "currency",
@@ -88,7 +87,6 @@ function renderJobsTable(jobList) {
             <td>{job.hoursWorked}</td>
             <td>
               <JobDetail job={job} />
-              {/* <Link to={`/jobs/${job.id}`}>Details</Link> */}
             </td>
           </tr>
         ))}
