@@ -1,10 +1,10 @@
 import * as React from "react";
-import { bindActionCreators } from "redux";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { actionCreators } from "../store/Jobs";
-import { Modal, Form, Button } from "react-bootstrap";
+import { Spinner, Modal, Form, Button, Table } from "react-bootstrap";
 import AddJob from "./AddJob.js";
+import JobDetail from "./JobDetail";
 
 const FetchJobs = () => {
   //state = {
@@ -13,26 +13,26 @@ const FetchJobs = () => {
   //};
 
   const dispatch = useDispatch();
-  const jobList = useSelector((state) => state.jobs);
-  const boundActionCreators = bindActionCreators(
-    actionCreators.requestJobs,
-    dispatch
-  );
+  const jobList = useSelector((state) => state.jobs.jobs);
+  const isLoading = useSelector((state) => state.jobs.isLoading);
+  // const startDateIndex = useSelector((state) => state.jobs.startDateIndex);
+
+  // console.log(`startDateIndex: ${startDateIndex}`);
 
   React.useEffect(() => {
-    dispatch(boundActionCreators);
+    // dispatch(actionCreators.requestJobs(startDateIndex));
+    dispatch(actionCreators.requestJobs());
   }, []);
 
-  console.log("job list: " + jobList.jobs);
+  console.log(`job list: ${jobList}`);
 
-  if (!jobList.isLoading) {
+  if (!isLoading) {
     return (
       <div>
         <h1>Jobs</h1>
         <p>These are the jobs you've completed this year</p>
         {/*renderAddJobButton(this.props)*/}
         <AddJob />
-        {/* {renderJobsTable(this.props)} */}
         {renderJobsTable(jobList)}
         {/* {renderPagination(startDateIndex)} */}
       </div>
@@ -42,14 +42,16 @@ const FetchJobs = () => {
     <div>
       <h1>Jobs</h1>
       <p>These are the jobs you've completed this year</p>
-      <h2>Loading...</h2>
+      <h2>
+        <Spinner animation="grow" />
+      </h2>
     </div>
   );
 };
 
 function renderJobsTable(jobList) {
   return (
-    <table className="table">
+    <Table responsive>
       <thead>
         <tr>
           <th>Employer</th>
@@ -62,10 +64,11 @@ function renderJobsTable(jobList) {
           <th>Date Invoiced</th>
           <th>Rate</th>
           <th>Hours Worked</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
-        {jobList.jobs.map((job) => (
+        {jobList.map((job) => (
           <tr key={job.id}>
             <td>{job.employer}</td>
             <td>{job.jobTitle}</td>
@@ -83,16 +86,20 @@ function renderJobsTable(jobList) {
             <td>{new Date(job.dateInvoiced).toLocaleDateString()}</td>
             <td>{job.rate}</td>
             <td>{job.hoursWorked}</td>
+            <td>
+              <JobDetail job={job} />
+              {/* <Link to={`/jobs/${job.id}`}>Details</Link> */}
+            </td>
           </tr>
         ))}
       </tbody>
-    </table>
+    </Table>
   );
 }
 
-function renderPagination(props) {
-  const prevStartDateIndex = (props.startDateIndex || 0) - 5;
-  const nextStartDateIndex = (props.startDateIndex || 0) + 5;
+function renderPagination(startIndex) {
+  const prevStartDateIndex = (startIndex || 0) - 5;
+  const nextStartDateIndex = (startIndex || 0) + 5;
 
   return (
     <p className="clearfix text-center">
@@ -108,13 +115,9 @@ function renderPagination(props) {
       >
         Next
       </Link>
-      {props.isLoading ? <span>Loading...</span> : []}
+      {/* {isLoading ? <span>Loading...</span> : []} */}
     </p>
   );
 }
 
-// export default connect(
-//   (state) => state.jobs,
-//   (dispatch) => bindActionCreators(actionCreators, dispatch)
-// )(FetchJobs);
 export default FetchJobs;
