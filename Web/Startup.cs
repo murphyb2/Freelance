@@ -1,3 +1,4 @@
+using FreelanceDataAccess;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -23,6 +24,7 @@ namespace Freelance
         {
             //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddControllersWithViews();
+            services.AddSingleton<FreelanceDatabase>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
