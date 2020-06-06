@@ -1,13 +1,15 @@
-version: '2'
+version: "3"
 
 services:
   mysql-dev:
-    image: mysql
+    container_name: mysqldb
+    image: mysql:8.0
+    restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=test
-      - MYSQL_ROOT_USER=root
-      - MYSQL_DATABASE=freelance
-      - MYSQL_ROOT_HOST=192.168.0.48/255.255.255.248
+      MYSQL_ROOT_PASSWORD: ecEEn7h3mC8OCR
+      MYSQL_DATABASE: freelance
+      MYSQL_USER: user
+      MYSQL_PASSWORD: ecEEn7h3mC8OCR
     ports:
       - 3308:3306
     volumes:
