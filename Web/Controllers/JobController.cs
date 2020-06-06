@@ -14,11 +14,14 @@ namespace Freelance.Controllers
     public class JobController : ControllerBase
     {
         private readonly ReadOnlyCollection<Job> _jobs;
+        private readonly FreelanceDatabase _da;
 
-        public JobController()
+        public JobController(FreelanceDatabase db)
         {
-            var da = new FreelanceDatabase();
-            _jobs = da.FetchJobList<Job>().OrderByDescending(x => x.EndDate).ToList().AsReadOnly();
+            //var da = new FreelanceDatabase();
+            //_jobs = da.FetchJobList<Job>().OrderByDescending(x => x.EndDate).ToList().AsReadOnly();
+            _da = db;
+            _jobs = _da.FetchJobList<Job>().OrderByDescending(x => x.EndDate).ToList().AsReadOnly();
         }
 
         // api/job
