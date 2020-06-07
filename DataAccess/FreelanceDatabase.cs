@@ -61,7 +61,7 @@ namespace FreelanceDataAccess
             try
             {
                 using (var con =
-                    new MySqlConnection("Server=localhost;User ID=root;Password=ecEEn7h3m$C8OCR;Database=freelance"))
+                    new MySqlConnection("Server=localhost;User ID=root;Password=ecEEn7h3mC8OCR;Database=freelance;Port=3308"))
                 {
                     affectedRows = con.Execute(sql, new
                     {
@@ -97,7 +97,7 @@ namespace FreelanceDataAccess
             try
             {
                 using (var con =
-                        new MySqlConnection("Server=localhost;User ID=root;Password=ecEEn7h3m$C8OCR;Database=freelance"))
+                        new MySqlConnection("Server=localhost;User ID=root;Password=ecEEn7h3mC8OCR;Database=freelance;Port=3308"))
                 {
                     affectedRows = con.Execute(sql, new { Id = id });
 
