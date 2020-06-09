@@ -27,11 +27,6 @@ export default (props) => (
             </IndexLinkContainer>
           </Nav.Item>
           <Nav.Item>
-            <IndexLinkContainer to="/counter">
-              <Nav.Link>Counter</Nav.Link>
-            </IndexLinkContainer>
-          </Nav.Item>
-          <Nav.Item>
             <IndexLinkContainer to="/jobs">
               <Nav.Link>Jobs</Nav.Link>
             </IndexLinkContainer>

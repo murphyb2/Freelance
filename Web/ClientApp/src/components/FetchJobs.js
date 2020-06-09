@@ -5,6 +5,7 @@ import { actionCreators } from "../store/Jobs";
 import { Spinner, Modal, Form, Button, Table } from "react-bootstrap";
 import AddJob from "./AddJob.js";
 import JobDetail from "./JobDetail";
+import JobsSummary from "./JobsSummary";
 
 const FetchJobs = () => {
   //state = {
@@ -17,14 +18,12 @@ const FetchJobs = () => {
   const isLoading = useSelector((state) => state.jobs.isLoading);
   // const startDateIndex = useSelector((state) => state.jobs.startDateIndex);
 
-  // console.log(`startDateIndex: ${startDateIndex}`);
-
   React.useEffect(() => {
     // dispatch(actionCreators.requestJobs(startDateIndex));
     dispatch(actionCreators.requestJobs());
   }, []);
 
-  console.log(`job list: ${jobList}`);
+  // console.log(`job list: ${jobList}`);
 
   if (!isLoading) {
     return (
@@ -34,6 +33,7 @@ const FetchJobs = () => {
         {/*renderAddJobButton(this.props)*/}
         <AddJob />
         {renderJobsTable(jobList)}
+        <JobsSummary jobsList={jobList} />
         {/* {renderPagination(startDateIndex)} */}
       </div>
     );
