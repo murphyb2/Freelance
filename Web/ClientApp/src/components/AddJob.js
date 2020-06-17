@@ -39,20 +39,6 @@ function AddJob() {
     const form = event.currentTarget;
 
     event.preventDefault();
-    console.log(form.startDate.value);
-    // console.log({
-    //   jobTitle: form.jobTitle.value,
-    //   employer: form.employer.value,
-    //   location: form.location.value,
-    //   hoursWorked: Number(form.hoursWorked.value),
-    //   rate: Number(form.rate.value),
-    //   compensation: Number(totalComp),
-    //   // startDate: "2020-05-30T00:00:00",
-    //   startDate: new Date(form.startDate.value).toLocaleString(),
-    //   endDate: new Date(form.endDate.value).toLocaleString(),
-    //   dateInvoiced: new Date(form.dateInvoiced.value).toLocaleString(),
-    //   paid: form.paid.value ? true : false,
-    // });
 
     if (form.checkValidity() === false) {
       event.stopPropagation();
@@ -65,7 +51,6 @@ function AddJob() {
           hoursWorked: Number(form.hoursWorked.value),
           rate: Number(form.rate.value),
           compensation: Number(totalComp),
-          // startDate: "2020-05-30T00:00:00",
           startDate: form.startDate.value,
           endDate: form.endDate.value,
           dateInvoiced: form.dateInvoiced.value,
@@ -128,11 +113,7 @@ function AddJob() {
 
             <Form.Group>
               <Form.Row>
-                <Form.Group
-                  onChange={calculateComp}
-                  as={Col}
-                  // controlId="hoursWorked"
-                >
+                <Form.Group onChange={calculateComp} as={Col}>
                   <Form.Label>Hours Worked</Form.Label>
                   <Form.Control
                     id="hoursWorked"
@@ -143,12 +124,7 @@ function AddJob() {
                     defaultValue={totalHours}
                   />
                 </Form.Group>
-                <Form.Group
-                  as={Col}
-                  // controlId="rate"
-
-                  onChange={calculateComp}
-                >
+                <Form.Group as={Col} onChange={calculateComp}>
                   <Form.Label>Rate</Form.Label>
                   <Form.Control
                     id="rate"
@@ -210,9 +186,6 @@ function AddJob() {
             </Form.Row>
           </Form>
         </Modal.Body>
-
-        {/* <Modal.Footer>
-        </Modal.Footer> */}
       </Modal>
     </>
   );
