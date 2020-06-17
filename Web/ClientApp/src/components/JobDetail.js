@@ -1,13 +1,9 @@
 import * as React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { actionCreators } from "../store/Jobs";
-import { Spinner, ListGroup, Modal, Button } from "react-bootstrap";
+import { ListGroup, Modal, Button } from "react-bootstrap";
 
 const JobDetail = (props) => {
   const jobDetail = props.job;
-  console.log(jobDetail);
+  // console.log(jobDetail);
 
   // Modal handling
   const [show, setShow] = React.useState(false);

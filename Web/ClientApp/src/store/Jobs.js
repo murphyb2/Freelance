@@ -2,12 +2,17 @@
 const receiveJobsType = "RECEIVE_JOBS";
 const requestJobByIdType = "REQUEST_JOB_BY_ID";
 const receiveJobByIdType = "RECEIVE_JOB_BY_ID";
+const addNewJobType = "ADD_NEW_JOB";
+const newJobAddedType = "NEW_JOB_ADDED";
+const clearAddJobType = "CLEAR_ADD_JOB";
 
 const initialState = {
   jobs: [],
   isLoading: false,
   startDateIndex: 123,
   jobDetail: [],
+  processingNewJob: false,
+  processedJobSuccess: "",
 };
 
 export const actionCreators = {
@@ -15,9 +20,9 @@ export const actionCreators = {
   requestJobs: () => async (dispatch, getState) => {
     const appState = getState();
 
-    console.log("request jobs action creators");
+    // console.log("request jobs action creators");
     // console.log(`given index: ${startDateIndex}`);
-    console.log(`current index: ${appState.jobs.startDateIndex}`);
+    // console.log(`current index: ${appState.jobs.startDateIndex}`);
     if (
       appState ||
       appState.jobs
@@ -41,6 +46,7 @@ export const actionCreators = {
       // dispatch({ type: receiveJobsType, startDateIndex, jobs });
     }
   },
+
   requestJobById: (jobId) => async (dispatch, getState) => {
     dispatch({ type: requestJobByIdType });
 
@@ -51,13 +57,34 @@ export const actionCreators = {
 
     dispatch({ type: receiveJobByIdType, jobId, job });
   },
+
+  addNewJob: (job) => async (dispatch, getState) => {
+    dispatch({ type: addNewJobType });
+
+    console.log(JSON.stringify(job));
+    const url = `api/Job`;
+
+    const response = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify(job),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const success = await response.json();
+
+    dispatch({ type: newJobAddedType, success });
+  },
+  clearAddJob: () => async (dispatch) => {
+    dispatch({ type: clearAddJobType });
+  },
 };
 
 export const reducer = (state, action) => {
   state = state || initialState;
 
   if (action.type === requestJobsType) {
-    console.log("request jobs type");
+    // console.log("request jobs type");
     console.log(action.startDateIndex);
     return {
       ...state,
@@ -67,7 +94,7 @@ export const reducer = (state, action) => {
   }
 
   if (action.type === receiveJobsType) {
-    console.log("receive jobs type");
+    // console.log("receive jobs type");
     console.log(action.startDateIndex);
     return {
       ...state,
@@ -78,7 +105,7 @@ export const reducer = (state, action) => {
   }
 
   if (action.type === requestJobByIdType) {
-    console.log("request job by id type");
+    // console.log("request job by id type");
     return {
       ...state,
       isLoading: true,
@@ -86,11 +113,34 @@ export const reducer = (state, action) => {
   }
 
   if (action.type === receiveJobByIdType) {
-    console.log("receive job by id type");
+    // console.log("receive job by id type");
     return {
       ...state,
       jobDetail: action.job,
       isLoading: false,
+    };
+  }
+
+  if (action.type === addNewJobType) {
+    console.log("add new job type");
+    return {
+      ...state,
+      processingNewJob: true,
+    };
+  }
+  if (action.type === newJobAddedType) {
+    console.log(`new job processed, success? ${action.success}`);
+    return {
+      ...state,
+      processingNewJob: false,
+      processedJobSuccess: action.success,
+    };
+  }
+
+  if (action.type === clearAddJobType) {
+    return {
+      ...state,
+      processedJobSuccess: "",
     };
   }
 

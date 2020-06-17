@@ -32,6 +32,22 @@ namespace Freelance.Models
         #region Constructor
         // Parameterless, base constructor allows Dapper to function properly
         public Job() : base() { }
+
+        // Copy Constructor
+        public Job(Job other)
+        {
+            Employer = other.Employer;
+            JobTitle = other.JobTitle;
+            Location = other.Location;
+            Compensation = other.Compensation;
+            StartDate = other.StartDate;
+            EndDate = other.EndDate;
+            Id = Guid.NewGuid().ToString();
+            Paid = other.Paid;
+            DateInvoiced = other.DateInvoiced;
+            Rate = other.Rate;
+            HoursWorked = other.HoursWorked;
+        }
         public Job(string cmp, string title, string loc, float pay, DateTime start, DateTime end, float hours, bool paid, DateTime invoiceDate, float rate)
         {
             Employer = cmp;

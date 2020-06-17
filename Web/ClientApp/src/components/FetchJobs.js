@@ -1,8 +1,8 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { actionCreators } from "../store/Jobs";
-import { Spinner, Modal, Form, Button, Table } from "react-bootstrap";
+import { Spinner, Table } from "react-bootstrap";
 import AddJob from "./AddJob.js";
 import JobDetail from "./JobDetail";
 import JobsSummary from "./JobsSummary";
@@ -18,7 +18,9 @@ const FetchJobs = () => {
   const isLoading = useSelector((state) => state.jobs.isLoading);
   // const startDateIndex = useSelector((state) => state.jobs.startDateIndex);
 
-  React.useEffect(() => {
+  // console.log(`startDateIndex: ${startDateIndex}`);
+
+  useEffect(() => {
     // dispatch(actionCreators.requestJobs(startDateIndex));
     dispatch(actionCreators.requestJobs());
   }, []);

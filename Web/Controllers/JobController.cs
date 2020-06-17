@@ -35,6 +35,13 @@ namespace Freelance.Controllers
             return _jobs.Where(x => x.Id == id).ToList().AsReadOnly();
         }
 
+        [HttpPost]
+        public JsonResult AddJob([FromBody]Job value)
+        {
+            Console.WriteLine($"addjob: {value}");
+            return new JsonResult("success");
+        }
+
 
     }
 }
