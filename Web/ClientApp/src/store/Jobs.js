@@ -19,7 +19,7 @@ export const actionCreators = {
   requestJobs: () => async (dispatch, getState) => {
     const appState = getState();
 
-    console.log("request jobs action creators");
+    // console.log("request jobs action creators");
     // console.log(`given index: ${startDateIndex}`);
     // console.log(`current index: ${appState.jobs.startDateIndex}`);
     if (
