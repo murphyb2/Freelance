@@ -7,7 +7,7 @@ import { Spinner, ListGroup, Modal, Button } from "react-bootstrap";
 
 const JobDetail = (props) => {
   const jobDetail = props.job;
-  console.log(jobDetail);
+  // console.log(jobDetail);
 
   // Modal handling
   const [show, setShow] = React.useState(false);

@@ -2,7 +2,7 @@ import * as React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { actionCreators } from "../store/Jobs";
-import { Spinner, Modal, Form, Button, Table } from "react-bootstrap";
+import { Spinner, Table } from "react-bootstrap";
 import AddJob from "./AddJob.js";
 import JobDetail from "./JobDetail";
 
@@ -24,7 +24,7 @@ const FetchJobs = () => {
     dispatch(actionCreators.requestJobs());
   }, []);
 
-  console.log(`job list: ${jobList}`);
+  // console.log(`job list: ${jobList}`);
 
   if (!isLoading) {
     return (

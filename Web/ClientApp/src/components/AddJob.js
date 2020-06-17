@@ -1,24 +1,51 @@
 import React, { useState } from "react";
-import { Form, Modal, Button } from "react-bootstrap";
+import {
+  Form,
+  Modal,
+  ButtonGroup,
+  Button,
+  FormControl,
+  Col,
+} from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { actionCreators } from "../store/Jobs";
 
 function AddJob() {
+  const dispatch = useDispatch();
+
   const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
   const [validated, setValidated] = useState(false);
+
+  const handleClose = (event) => {
+    setValidated(false);
+    setShow(false);
+  };
+  const handleShow = () => setShow(true);
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
-    console.log(form.jobTitle.value);
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
 
-    setValidated(true);
     event.preventDefault();
+
+    if (form.checkValidity() === false) {
+      event.stopPropagation();
+    } else {
+      dispatch(
+        actionCreators.addNewJob({
+          jobTitle: form.jobTitle.value,
+          employer: form.employer.value,
+          location: form.location.value,
+          hoursWorked: 82.4,
+          compensation: 1809.55,
+          startDate: "2020-05-30T00:00:00",
+          endDate: "2020-05-30T00:00:00",
+          dateInvoiced: "2020-05-30T00:00:00",
+          paid: form.paid.value ? true : false,
+          rate: 25.99,
+        })
+      );
+    }
+    setValidated(true);
   };
 
   return (
@@ -61,7 +88,7 @@ Rate */}
               />
             </Form.Group>
 
-            <Form.Group controlId="formLocation">
+            <Form.Group>
               <Form.Label>Location</Form.Label>
               <Form.Control
                 id="location"
@@ -71,24 +98,24 @@ Rate */}
               />
             </Form.Group>
 
-            <Form.Group controlId="formBasicPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Password" required />
+            <Form.Group controlId="paid">
+              <Form.Check type="checkbox" label="Invoice Paid" />
             </Form.Group>
-            <Form.Group controlId="formBasicCheckbox">
-              <Form.Check type="checkbox" label="Check me out" />
-            </Form.Group>
-            <Button variant="primary" type="submit">
-              Save & Add
-            </Button>
+            <Form.Row className="justify-content-center">
+              <ButtonGroup size="lg" className="mb-2">
+                <Button variant="primary" type="submit">
+                  Save & Add
+                </Button>
+                <Button variant="secondary" onClick={handleClose}>
+                  Cancel
+                </Button>
+              </ButtonGroup>
+            </Form.Row>
           </Form>
         </Modal.Body>
 
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Cancel
-          </Button>
-        </Modal.Footer>
+        {/* <Modal.Footer>
+        </Modal.Footer> */}
       </Modal>
     </>
   );
