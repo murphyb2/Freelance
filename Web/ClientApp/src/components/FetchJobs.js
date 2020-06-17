@@ -5,6 +5,7 @@ import { actionCreators } from "../store/Jobs";
 import { Spinner, Table } from "react-bootstrap";
 import AddJob from "./AddJob.js";
 import JobDetail from "./JobDetail";
+import JobsSummary from "./JobsSummary";
 
 const FetchJobs = () => {
   //state = {
@@ -34,6 +35,7 @@ const FetchJobs = () => {
         {/*renderAddJobButton(this.props)*/}
         <AddJob />
         {renderJobsTable(jobList)}
+        <JobsSummary jobsList={jobList} />
         {/* {renderPagination(startDateIndex)} */}
       </div>
     );
