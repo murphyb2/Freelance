@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { actionCreators } from "../store/Jobs";
@@ -19,7 +19,7 @@ const FetchJobs = () => {
 
   // console.log(`startDateIndex: ${startDateIndex}`);
 
-  React.useEffect(() => {
+  useEffect(() => {
     // dispatch(actionCreators.requestJobs(startDateIndex));
     dispatch(actionCreators.requestJobs());
   }, []);

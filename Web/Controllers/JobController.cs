@@ -38,7 +38,7 @@ namespace Freelance.Controllers
         [HttpPost]
         public JsonResult AddJob([FromBody]Job value)
         {
-            Console.WriteLine(value);
+            Console.WriteLine($"addjob: {value}");
             return new JsonResult("success");
         }
 

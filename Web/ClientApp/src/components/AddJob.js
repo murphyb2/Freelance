@@ -1,13 +1,6 @@
-import React, { useState } from "react";
-import {
-  Form,
-  Modal,
-  ButtonGroup,
-  Button,
-  FormControl,
-  Col,
-} from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { Form, Modal, ButtonGroup, Button, Alert, Col } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import { actionCreators } from "../store/Jobs";
 
 function AddJob() {
@@ -16,8 +9,28 @@ function AddJob() {
   const [show, setShow] = useState(false);
   const [validated, setValidated] = useState(false);
 
+  const [totalComp, setComp] = useState(0);
+  const [totalRate, setRate] = useState(0);
+  const [totalHours, setHours] = useState(0);
+  const calculateComp = (event) => {
+    event.target.id === "hoursWorked"
+      ? setHours(event.target.value)
+      : setRate(event.target.value);
+  };
+
+  useEffect(() => {
+    setComp(Number(totalHours) * Number(totalRate));
+  }, [totalRate, totalHours]);
+
+  const addSuccess = useSelector((state) => state.jobs.processedJobSuccess);
+
   const handleClose = (event) => {
+    dispatch(actionCreators.clearAddJob());
     setValidated(false);
+    setComp(0);
+    setHours(0);
+    setRate(0);
+
     setShow(false);
   };
   const handleShow = () => setShow(true);
@@ -26,6 +39,20 @@ function AddJob() {
     const form = event.currentTarget;
 
     event.preventDefault();
+    console.log(form.startDate.value);
+    // console.log({
+    //   jobTitle: form.jobTitle.value,
+    //   employer: form.employer.value,
+    //   location: form.location.value,
+    //   hoursWorked: Number(form.hoursWorked.value),
+    //   rate: Number(form.rate.value),
+    //   compensation: Number(totalComp),
+    //   // startDate: "2020-05-30T00:00:00",
+    //   startDate: new Date(form.startDate.value).toLocaleString(),
+    //   endDate: new Date(form.endDate.value).toLocaleString(),
+    //   dateInvoiced: new Date(form.dateInvoiced.value).toLocaleString(),
+    //   paid: form.paid.value ? true : false,
+    // });
 
     if (form.checkValidity() === false) {
       event.stopPropagation();
@@ -35,13 +62,14 @@ function AddJob() {
           jobTitle: form.jobTitle.value,
           employer: form.employer.value,
           location: form.location.value,
-          hoursWorked: 82.4,
-          compensation: 1809.55,
-          startDate: "2020-05-30T00:00:00",
-          endDate: "2020-05-30T00:00:00",
-          dateInvoiced: "2020-05-30T00:00:00",
+          hoursWorked: Number(form.hoursWorked.value),
+          rate: Number(form.rate.value),
+          compensation: Number(totalComp),
+          // startDate: "2020-05-30T00:00:00",
+          startDate: form.startDate.value,
+          endDate: form.endDate.value,
+          dateInvoiced: form.dateInvoiced.value,
           paid: form.paid.value ? true : false,
-          rate: 25.99,
         })
       );
     }
@@ -53,16 +81,16 @@ function AddJob() {
       <Button variant="primary" onClick={handleShow}>
         Add Job
       </Button>
-      {/* 
-HoursWorked
-Compensation
-StartDate
-EndDate
-DateInvoiced
-Paid
-Rate */}
-
       <Modal show={show} onHide={handleClose} centered size="lg">
+        <Alert
+          show={addSuccess === "success" ? true : false}
+          variant="success"
+          dismissible
+          onClose={() => dispatch(actionCreators.clearAddJob())}
+        >
+          Job added successfully!
+        </Alert>
+
         <Modal.Header closeButton>
           <Modal.Title>Add Job</Modal.Title>
         </Modal.Header>
@@ -98,9 +126,78 @@ Rate */}
               />
             </Form.Group>
 
-            <Form.Group controlId="paid">
-              <Form.Check type="checkbox" label="Invoice Paid" />
+            <Form.Group>
+              <Form.Row>
+                <Form.Group
+                  onChange={calculateComp}
+                  as={Col}
+                  // controlId="hoursWorked"
+                >
+                  <Form.Label>Hours Worked</Form.Label>
+                  <Form.Control
+                    id="hoursWorked"
+                    type="number"
+                    step=".01"
+                    placeholder="Total Hours Worked"
+                    required
+                    defaultValue={totalHours}
+                  />
+                </Form.Group>
+                <Form.Group
+                  as={Col}
+                  // controlId="rate"
+
+                  onChange={calculateComp}
+                >
+                  <Form.Label>Rate</Form.Label>
+                  <Form.Control
+                    id="rate"
+                    type="number"
+                    step=".01"
+                    placeholder="Hourly Rate"
+                    required
+                    defaultValue={totalRate}
+                  />
+                </Form.Group>
+              </Form.Row>
+              <Form.Label>Compensation: </Form.Label>
+              <Form.Label id="compensation">
+                {Intl.NumberFormat("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                }).format(totalComp)}
+              </Form.Label>
             </Form.Group>
+
+            <Form.Group>
+              <Form.Row>
+                <Col>
+                  <Form.Label>Start Date</Form.Label>
+                  <Form.Control id="startDate" type="date" required />
+                </Col>
+                <Col>
+                  <Form.Label>End Date</Form.Label>
+                  <Form.Control id="endDate" type="date" required />
+                </Col>
+              </Form.Row>
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Row>
+                <Col>
+                  <Form.Check type="checkbox" id="paid" label="Invoice Paid" />
+                </Col>
+                <Col>
+                  <Form.Label>Date Invoiced</Form.Label>
+                  <Form.Control
+                    defaultValue={Date()}
+                    id="dateInvoiced"
+                    type="date"
+                  />
+                </Col>
+              </Form.Row>
+            </Form.Group>
+
             <Form.Row className="justify-content-center">
               <ButtonGroup size="lg" className="mb-2">
                 <Button variant="primary" type="submit">

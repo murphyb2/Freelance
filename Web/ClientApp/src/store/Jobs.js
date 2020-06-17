@@ -4,6 +4,7 @@ const requestJobByIdType = "REQUEST_JOB_BY_ID";
 const receiveJobByIdType = "RECEIVE_JOB_BY_ID";
 const addNewJobType = "ADD_NEW_JOB";
 const newJobAddedType = "NEW_JOB_ADDED";
+const clearAddJobType = "CLEAR_ADD_JOB";
 
 const initialState = {
   jobs: [],
@@ -74,6 +75,9 @@ export const actionCreators = {
 
     dispatch({ type: newJobAddedType, success });
   },
+  clearAddJob: () => async (dispatch) => {
+    dispatch({ type: clearAddJobType });
+  },
 };
 
 export const reducer = (state, action) => {
@@ -130,6 +134,13 @@ export const reducer = (state, action) => {
       ...state,
       processingNewJob: false,
       processedJobSuccess: action.success,
+    };
+  }
+
+  if (action.type === clearAddJobType) {
+    return {
+      ...state,
+      processedJobSuccess: "",
     };
   }
 
