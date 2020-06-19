@@ -53,8 +53,9 @@ function AddJob() {
           compensation: Number(totalComp),
           startDate: form.startDate.value,
           endDate: form.endDate.value,
-          dateInvoiced: form.dateInvoiced.value,
-          paid: form.paid.value ? true : false,
+          dateInvoiced:
+            form.paid.value === true ? form.dateInvoiced.value : new Date(),
+          paid: form.paid.value === true ? true : false,
         })
       );
     }
@@ -165,11 +166,7 @@ function AddJob() {
                 </Col>
                 <Col>
                   <Form.Label>Date Invoiced</Form.Label>
-                  <Form.Control
-                    defaultValue={Date()}
-                    id="dateInvoiced"
-                    type="date"
-                  />
+                  <Form.Control id="dateInvoiced" type="date" />
                 </Col>
               </Form.Row>
             </Form.Group>
