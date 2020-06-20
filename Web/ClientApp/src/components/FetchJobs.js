@@ -53,7 +53,7 @@ const FetchJobs = () => {
 
 function renderJobsTable(jobList) {
   return (
-    <Table responsive>
+    <Table responsive striped size="md" variant="dark">
       <thead>
         <tr>
           <th>Employer</th>
@@ -62,16 +62,16 @@ function renderJobsTable(jobList) {
           <th>Compensation</th>
           <th>Start Date</th>
           <th>End Date</th>
-          <th>Paid</th>
+          {/* <th>Paid</th> */}
           <th>Date Invoiced</th>
-          <th>Rate</th>
-          <th>Hours Worked</th>
+          {/* <th>Rate</th> */}
+          {/* <th>Hours Worked</th> */}
           <th></th>
         </tr>
       </thead>
       <tbody>
         {jobList.map((job) => (
-          <tr key={job.id}>
+          <tr key={job.id} className={job.paid === true ? "" : "bg-warning"}>
             <td>{job.employer}</td>
             <td>{job.jobTitle}</td>
             <td>{job.location}</td>
@@ -83,10 +83,10 @@ function renderJobsTable(jobList) {
             </td>
             <td>{new Date(job.startDate).toLocaleDateString()}</td>
             <td>{new Date(job.endDate).toLocaleDateString()}</td>
-            <td>{job.paid ? "Yes" : "No"}</td>
+            {/* <td>{job.paid ? "Yes" : "No"}</td> */}
             <td>{new Date(job.dateInvoiced).toLocaleDateString()}</td>
-            <td>{job.rate}</td>
-            <td>{job.hoursWorked}</td>
+            {/* <td>{job.rate}</td> */}
+            {/* <td>{job.hoursWorked}</td> */}
             <td>
               <JobDetail job={job} />
             </td>
