@@ -72,22 +72,28 @@ function renderJobsTable(jobList) {
       <tbody>
         {jobList.map((job) => (
           <tr key={job.id} className={job.paid === true ? "" : "bg-warning"}>
-            <td>{job.employer}</td>
-            <td>{job.jobTitle}</td>
-            <td>{job.location}</td>
-            <td>
+            <td className="align-middle">{job.employer}</td>
+            <td className="align-middle">{job.jobTitle}</td>
+            <td className="align-middle">{job.location}</td>
+            <td className="align-middle">
               {new Intl.NumberFormat("en-US", {
                 style: "currency",
                 currency: "USD",
               }).format(job.compensation)}
             </td>
-            <td>{new Date(job.startDate).toLocaleDateString()}</td>
-            <td>{new Date(job.endDate).toLocaleDateString()}</td>
+            <td className="align-middle">
+              {new Date(job.startDate).toLocaleDateString()}
+            </td>
+            <td className="align-middle">
+              {new Date(job.endDate).toLocaleDateString()}
+            </td>
             {/* <td>{job.paid ? "Yes" : "No"}</td> */}
-            <td>{new Date(job.dateInvoiced).toLocaleDateString()}</td>
+            <td className="align-middle">
+              {new Date(job.dateInvoiced).toLocaleDateString()}
+            </td>
             {/* <td>{job.rate}</td> */}
             {/* <td>{job.hoursWorked}</td> */}
-            <td>
+            <td className="align-middle">
               <JobDetail job={job} />
             </td>
           </tr>

@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Form, Modal, ButtonGroup, Button, Alert, Col } from "react-bootstrap";
+import {
+  Form,
+  Modal,
+  ButtonGroup,
+  Button,
+  Alert,
+  Col,
+  InputGroup,
+} from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators } from "../store/Jobs";
 
@@ -127,14 +135,21 @@ function AddJob() {
                 </Form.Group>
                 <Form.Group as={Col} onChange={calculateComp}>
                   <Form.Label>Rate</Form.Label>
-                  <Form.Control
-                    id="rate"
-                    type="number"
-                    step=".01"
-                    placeholder="Hourly Rate"
-                    required
-                    defaultValue={totalRate}
-                  />
+                  <InputGroup>
+                    <InputGroup.Prepend>
+                      <InputGroup.Text id="inputGroupPrepend">
+                        $
+                      </InputGroup.Text>
+                    </InputGroup.Prepend>
+                    <Form.Control
+                      id="rate"
+                      type="number"
+                      step=".01"
+                      placeholder="Hourly Rate"
+                      required
+                      defaultValue={totalRate}
+                    />
+                  </InputGroup>
                 </Form.Group>
               </Form.Row>
               <Form.Label>Compensation: </Form.Label>
