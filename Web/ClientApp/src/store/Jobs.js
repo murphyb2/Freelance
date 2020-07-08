@@ -99,7 +99,7 @@ export const actionCreators = {
     });
     const success = await response.json();
 
-    dispatch({ type: updateJobType, success });
+    dispatch({ type: jobUpdatedType, success });
   },
 };
 
@@ -179,7 +179,7 @@ export const reducer = (state, action) => {
     return {
       ...state,
       updatingJob: false,
-      success: action.success,
+      processedJobSuccess: action.success,
     };
   }
 

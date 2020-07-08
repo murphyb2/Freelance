@@ -43,9 +43,10 @@ namespace Freelance.Controllers
         }
 
         [HttpPut("{id}")]
-        public void UpdateJob(string id, Job jb)
+        public JsonResult UpdateJob(string id, Job jb)
         {
             Console.WriteLine($"Updating {id}, {jb}");
+            return new JsonResult("success");
         }
 
 

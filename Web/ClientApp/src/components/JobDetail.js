@@ -9,6 +9,7 @@ import {
   ButtonGroup,
   Button,
   Alert,
+  Spinner,
   Col,
   InputGroup,
 } from "react-bootstrap";
@@ -16,6 +17,8 @@ import {
 const JobDetail = (props) => {
   const jobDetail = props.job;
   const dispatch = useDispatch();
+
+  const isUpdating = useSelector((state) => state.jobs.updatingJob);
 
   // Modal handling
   const [show, setShow] = React.useState(false);
@@ -56,14 +59,13 @@ const JobDetail = (props) => {
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
-
     event.preventDefault();
 
     if (form.checkValidity() === false) {
       event.stopPropagation();
     } else {
       dispatch(
-        actionCreators.updateJob({
+        actionCreators.updateJob(jobDetail.id, {
           jobTitle: form.jobTitle.value,
           employer: form.employer.value,
           location: form.location.value,
@@ -73,8 +75,8 @@ const JobDetail = (props) => {
           startDate: form.startDate.value,
           endDate: form.endDate.value,
           dateInvoiced:
-            form.paid.value === true ? form.dateInvoiced.value : new Date(),
-          paid: form.paid.value === true ? true : false,
+            form.paid.checked === true ? form.dateInvoiced.value : new Date(),
+          paid: form.paid.checked,
           id: jobDetail.id,
         })
       );
@@ -135,6 +137,14 @@ const JobDetail = (props) => {
 
   const editView = (
     <Form noValidate validated={validated} onSubmit={handleSubmit}>
+      <Alert
+        show={updateSuccess === "success" ? true : false}
+        variant="success"
+        dismissible
+        onClose={() => dispatch(actionCreators.clearAddJob())}
+      >
+        Job updated successfully!
+      </Alert>
       <Form.Group>
         <Form.Label>Job Title</Form.Label>
         <Form.Control
@@ -261,7 +271,8 @@ const JobDetail = (props) => {
       <Form.Row className="justify-content-center">
         <ButtonGroup size="lg" className="mb-2">
           <Button variant="primary" type="submit">
-            Save Changes
+            {isUpdating ? "Saving Changes..." : "Save Changes"}
+            {isUpdating ? <Spinner animation="grow" /> : ""}
           </Button>
         </ButtonGroup>
       </Form.Row>

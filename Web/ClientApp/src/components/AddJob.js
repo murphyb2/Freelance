@@ -62,8 +62,8 @@ function AddJob() {
           startDate: form.startDate.value,
           endDate: form.endDate.value,
           dateInvoiced:
-            form.paid.value === true ? form.dateInvoiced.value : new Date(),
-          paid: form.paid.value === true ? true : false,
+            form.paid.checked === true ? form.dateInvoiced.value : new Date(),
+          paid: form.paid.checked,
         })
       );
     }
