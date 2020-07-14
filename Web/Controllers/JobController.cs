@@ -49,6 +49,13 @@ namespace Freelance.Controllers
             return new JsonResult("success");
         }
 
+        [HttpDelete("{id}")]
+        public JsonResult DeleteJob(string id)
+        {
+            Console.WriteLine(id);
+            return new JsonResult("success");
+        }
+
 
     }
 }

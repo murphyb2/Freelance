@@ -13,6 +13,7 @@ import {
   Col,
   InputGroup,
 } from "react-bootstrap";
+import DeleteJob from "./DeleteJob";
 
 const JobDetail = (props) => {
   const jobDetail = props.job;
@@ -274,6 +275,7 @@ const JobDetail = (props) => {
             {isUpdating ? "Saving Changes..." : "Save Changes"}
             {isUpdating ? <Spinner animation="grow" /> : ""}
           </Button>
+          <DeleteJob jobName={jobDetail.jobTitle} />
         </ButtonGroup>
       </Form.Row>
     </Form>
