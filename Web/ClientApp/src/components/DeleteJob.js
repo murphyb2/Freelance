@@ -8,7 +8,6 @@ export default function DeleteJob(props) {
   const dispatch = useDispatch();
   const history = useHistory();
   const [showDelete, setShowDelete] = useState(false);
-  const [redirect, setRedirect] = useState(false);
 
   const handleShowDelete = () => setShowDelete(true);
   const handleCloseDelete = () => setShowDelete(false);

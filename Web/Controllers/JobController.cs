@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Freelance.Models;
 using Microsoft.AspNetCore.Mvc;
 using FreelanceDataAccess;
+using Microsoft.AspNetCore.Http;
 
 namespace Freelance.Controllers
 {
@@ -18,42 +20,78 @@ namespace Freelance.Controllers
 
         public JobController(FreelanceDatabase db)
         {
-            //var da = new FreelanceDatabase();
-            //_jobs = da.FetchJobList<Job>().OrderByDescending(x => x.EndDate).ToList().AsReadOnly();
             _da = db;
             _jobs = _da.FetchJobList<Job>().OrderByDescending(x => x.EndDate).ToList().AsReadOnly();
         }
 
         // api/job
         [HttpGet]
-        public IReadOnlyCollection<Job> GetJobs() => _jobs;
+        public ActionResult GetJobs() => Ok(_jobs);
 
         // api/job/{id}
         [HttpGet("{id}")]
-        public IReadOnlyCollection<Job> GetJobById(string id)
+        public ActionResult GetJobById(string id)
         {
-            return _jobs.Where(x => x.Id == id).ToList().AsReadOnly();
+            var jobById = _jobs.Where(x => x.Id == id);
+
+            if (!jobById.Any()) return NotFound();
+            
+            return Ok(jobById);
         }
 
         [HttpPost]
-        public JsonResult AddJob([FromBody]Job value)
+        public ActionResult AddJob([FromBody]Job jb)
         {
-            Console.WriteLine($"addjob: {value}");
-            return new JsonResult("success");
+            if (!ValidateJob(jb))
+            {
+                return BadRequest("All fields are required");
+            }
+
+            var _success = _da.AddJob(new Job(jb));
+            if (!_success)
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new { success = false, msg = "Could not add Job to database" });
+
+            return Ok(new { success = _success });
+        }
+
+        private bool ValidateJob(Job j)
+        {
+            if (j.Compensation < 0 ||
+                j.Employer.Length < 1 ||
+                j.HoursWorked < 0.0 ||
+                j.JobTitle.Length < 1 ||
+                j.Location.Length < 1 ||
+                j.Rate < 1 ||
+                j.EndDate.Equals(null) ||
+                j.StartDate.Equals(null))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         [HttpPut("{id}")]
-        public JsonResult UpdateJob(string id, Job jb)
+        public ActionResult UpdateJob(string id, Job jb)
         {
             Console.WriteLine($"Updating {id}, {jb}");
-            return new JsonResult("success");
+            return Ok(new { success=true });
         }
 
         [HttpDelete("{id}")]
-        public JsonResult DeleteJob(string id)
+        public ActionResult DeleteJob(string id)
         {
-            Console.WriteLine(id);
-            return new JsonResult("success");
+            var jobById = _jobs.Where(x => x.Id == id);
+
+            if (!jobById.Any()) return NotFound();
+
+            bool success = _da.DeleteJob(id);
+            if (!success)
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new {success = false, msg = "Could not delete Job from database"});
+
+            return NoContent();
         }
 
 
