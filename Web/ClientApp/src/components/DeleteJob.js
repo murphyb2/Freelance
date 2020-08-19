@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { actionCreators } from "../store/Jobs";
 import { useHistory } from "react-router";
 
-export default function DeleteJob(props) {
+export default function DeleteJob({ jobName, jobId }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const [showDelete, setShowDelete] = useState(false);
@@ -12,9 +12,14 @@ export default function DeleteJob(props) {
   const handleShowDelete = () => setShowDelete(true);
   const handleCloseDelete = () => setShowDelete(false);
   const handleDeleteJob = () => {
-    alert("Deleted!");
+    console.log("jobName: ", jobName);
+    console.log("jobId: ", jobId);
+
+    dispatch(actionCreators.deleteJob(jobId));
+
     // re render this route
-    history.go();
+    // history.go();
+    // setShowDelete(false);
   };
 
   //   if (redirect == true) return <Redirect push to="/jobs" />;
@@ -25,9 +30,7 @@ export default function DeleteJob(props) {
         Delete Job
       </Button>
       <Modal show={showDelete} onHide={handleCloseDelete} centered size="lg">
-        <Modal.Header>
-          Are you sure you want to delete {props.jobName}?
-        </Modal.Header>
+        <Modal.Header>Are you sure you want to delete {jobName}?</Modal.Header>
         <ButtonGroup>
           <Button onClick={handleDeleteJob} variant="danger">
             Confirm Delete

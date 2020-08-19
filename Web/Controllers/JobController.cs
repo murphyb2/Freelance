@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Freelance.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -52,7 +51,7 @@ namespace Freelance.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     new { success = false, msg = "Could not add Job to database" });
 
-            return Ok(new { success = _success });
+            return Ok(new { success = true });
         }
 
         private bool ValidateJob(Job j)

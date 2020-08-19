@@ -5,6 +5,8 @@ const receiveJobByIdType = "RECEIVE_JOB_BY_ID";
 const addNewJobType = "ADD_NEW_JOB";
 const newJobAddedType = "NEW_JOB_ADDED";
 const clearAddJobType = "CLEAR_ADD_JOB";
+const deleteJobType = "DELETE_JOB";
+const deleteJobSuccessType = "DELETE_JOB_SUCCESS";
 const updateJobType = "UPDATE_JOB";
 const jobUpdatedType = "JOB_UPDATED";
 
@@ -14,18 +16,15 @@ const initialState = {
   startDateIndex: 123,
   jobDetail: [],
   processingNewJob: false,
-  processedJobSuccess: "",
+  processedJobSuccess: false,
   updatingJob: false,
+  processingDeleteJob: false,
 };
 
 export const actionCreators = {
-  // requestJobs: (startDateIndex) => async (dispatch, getState) => {
   requestJobs: () => async (dispatch, getState) => {
     const appState = getState();
 
-    // console.log("request jobs action creators");
-    // console.log(`given index: ${startDateIndex}`);
-    // console.log(`current index: ${appState.jobs.startDateIndex}`);
     if (
       appState ||
       appState.jobs
@@ -76,9 +75,29 @@ export const actionCreators = {
         "Content-Type": "application/json",
       },
     });
-    const success = await response.json();
+    const res = await response.json();
 
-    dispatch({ type: newJobAddedType, success });
+    dispatch({ type: newJobAddedType, success: res.success });
+  },
+
+  deleteJob: (jobId) => async (dispatch) => {
+    dispatch({ type: deleteJobType });
+
+    const url = `api/Job/${jobId}`;
+
+    fetch(url, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        console.log(response);
+        dispatch({ type: deleteJobSuccessType, response: response });
+      })
+      .catch((error) => {
+        dispatch({ type: deleteJobSuccessType, response: error });
+      });
   },
 
   clearAddJob: () => async (dispatch) => {
@@ -151,6 +170,7 @@ export const reducer = (state, action) => {
       processingNewJob: true,
     };
   }
+
   if (action.type === newJobAddedType) {
     // console.log(`new job processed, success? ${action.success}`);
     return {
@@ -160,10 +180,26 @@ export const reducer = (state, action) => {
     };
   }
 
+  if (action.type === deleteJobType) {
+    return {
+      ...state,
+      processingDeleteJob: true,
+      processedJobSuccess: false,
+    };
+  }
+
+  if (action.type === deleteJobSuccessType) {
+    return {
+      ...state,
+      processingDeleteJob: false,
+      processedJobSuccess: action.response.ok,
+    };
+  }
+
   if (action.type === clearAddJobType) {
     return {
       ...state,
-      processedJobSuccess: "",
+      processedJobSuccess: false,
     };
   }
 

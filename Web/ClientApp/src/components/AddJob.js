@@ -40,6 +40,7 @@ function AddJob() {
     setRate(0);
 
     setShow(false);
+    dispatch(actionCreators.requestJobs());
   };
   const handleShow = () => setShow(true);
 
@@ -77,7 +78,7 @@ function AddJob() {
       </Button>
       <Modal show={show} onHide={handleClose} centered size="lg">
         <Alert
-          show={addSuccess === "success" ? true : false}
+          show={addSuccess ? true : false}
           variant="success"
           dismissible
           onClose={() => dispatch(actionCreators.clearAddJob())}

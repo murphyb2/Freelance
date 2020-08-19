@@ -275,7 +275,7 @@ const JobDetail = (props) => {
             {isUpdating ? "Saving Changes..." : "Save Changes"}
             {isUpdating ? <Spinner animation="grow" /> : ""}
           </Button>
-          <DeleteJob jobName={jobDetail.jobTitle} />
+          <DeleteJob jobName={jobDetail.jobTitle} jobId={jobDetail.id} />
         </ButtonGroup>
       </Form.Row>
     </Form>
