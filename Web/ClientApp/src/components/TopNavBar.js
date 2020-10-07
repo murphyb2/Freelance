@@ -6,7 +6,6 @@ import Form from "react-bootstrap/Form";
 import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
 import { IndexLinkContainer } from "react-router-bootstrap";
-import { NavDropdown } from "react-bootstrap";
 
 export default (props) => (
   <Navbar
@@ -24,11 +23,6 @@ export default (props) => (
           <Nav.Item>
             <IndexLinkContainer to="/">
               <Nav.Link>Home</Nav.Link>
-            </IndexLinkContainer>
-          </Nav.Item>
-          <Nav.Item>
-            <IndexLinkContainer to="/counter">
-              <Nav.Link>Counter</Nav.Link>
             </IndexLinkContainer>
           </Nav.Item>
           <Nav.Item>

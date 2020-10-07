@@ -61,7 +61,7 @@ namespace FreelanceDataAccess
             try
             {
                 using (var con =
-                    new MySqlConnection("Server=localhost;User ID=root;Password=ecEEn7h3m$C8OCR;Database=freelance"))
+                    new MySqlConnection("Server=localhost;User ID=root;Password=ecEEn7h3mC8OCR;Database=freelance;Port=3308"))
                 {
                     affectedRows = con.Execute(sql, new
                     {
@@ -97,7 +97,7 @@ namespace FreelanceDataAccess
             try
             {
                 using (var con =
-                        new MySqlConnection("Server=localhost;User ID=root;Password=ecEEn7h3m$C8OCR;Database=freelance"))
+                        new MySqlConnection("Server=localhost;User ID=root;Password=ecEEn7h3mC8OCR;Database=freelance;Port=3308"))
                 {
                     affectedRows = con.Execute(sql, new { Id = id });
 
@@ -109,6 +109,65 @@ namespace FreelanceDataAccess
             }
 
             return affectedRows > 0;
+        }
+
+        public bool UpdateJob(IJob job)
+        {
+            //Employer 
+            //JobTitle 
+            //Location 
+            //StartDate 
+            //EndDate 
+            //DateInvoiced 
+            //Paid 
+            //Rate 
+            //HoursWorked 
+            //Compensation 
+            //Id
+            string sql = $@"UPDATE freelance.jobs 
+                            SET Employer = @Employer, 
+                            JobTitle = @JobTitle, 
+                            Location = @Location,
+                            StartDate = @StartDate,
+                            EndDate = @EndDate,
+                            DateInvoiced = @DateInvoiced,
+                            Paid = @Paid,
+                            Rate = @Rate,
+                            HoursWorked = @HoursWorked,
+                            Compensation = @Compensation
+                            WHERE Id = @Id";
+
+            int affectedRows = 0;
+            
+            try
+            {
+                using (var con =
+                    new MySqlConnection("Server=localhost;User ID=root;Password=ecEEn7h3mC8OCR;Database=freelance;Port=3308"))
+                {
+                    affectedRows = con.Execute(sql, job
+                        //new {
+                        //Id = job.Id,
+                        //Employer = job.Employer,
+                        //JobTitle = job.JobTitle,
+                        //Location = job.Location,
+                        //StartDate = job.StartDate,
+                        //EndDate = job.EndDate,
+                        //DateInvoiced = job.DateInvoiced,
+                        //Paid = job.Paid,
+                        //Rate = job.Rate,
+                        //HoursWorked = job.HoursWorked,
+                        //Compensation = job.Compensation,}
+                );
+
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            return affectedRows > 0;
+
         }
     }
 }
