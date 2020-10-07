@@ -62,7 +62,7 @@ namespace Freelance.Controllers
                 j.HoursWorked < 0.0 ||
                 j.JobTitle.Length < 1 ||
                 j.Location.Length < 1 ||
-                j.Rate < 1 ||
+                j.Rate < 0 ||
                 j.EndDate.Equals(null) ||
                 j.StartDate.Equals(null))
             {

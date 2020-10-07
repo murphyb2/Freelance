@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { actionCreators } from "../store/Jobs";
 import { Spinner, Table, Button } from "react-bootstrap";
 import AddJob from "./AddJob.js";
-import JobDetail from "./JobDetail";
 import { Link } from "react-router-dom";
 // import JobsSummary from "./JobsSummary";
 

@@ -58,7 +58,7 @@ export const actionCreators = {
     dispatch({ type: receiveJobByIdType, jobId, job: job[0] });
   },
 
-  addNewJob: (job) => async (dispatch, getState) => {
+  addNewJob: (job) => async (dispatch) => {
     dispatch({ type: addNewJobType });
 
     try {

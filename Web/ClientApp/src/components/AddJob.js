@@ -4,14 +4,13 @@ import {
   Modal,
   ButtonGroup,
   Button,
-  // Alert,
+  Alert,
   Spinner,
   Col,
   InputGroup,
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators } from "../store/Jobs";
-import { ToastSuccess } from "./shared/Toasts";
 
 const AddJob = () => {
   const dispatch = useDispatch();
@@ -33,6 +32,7 @@ const AddJob = () => {
     setComp(Number(totalHours) * Number(totalRate));
   }, [totalRate, totalHours]);
 
+  const addJobError = useSelector((state) => state.jobs.error);
   const addSuccess = useSelector((state) => state.jobs.processedJobSuccess);
   useEffect(() => {
     if (validated && !!addSuccess) {
@@ -85,8 +85,8 @@ const AddJob = () => {
       <Button variant="primary" onClick={handleShow}>
         Add Job
       </Button>
-      <ToastSuccess />
       <Modal show={show} onHide={handleClose} centered size="lg">
+        {addJobError && <Alert variant="danger">{addJobError}</Alert>}
         <Modal.Header closeButton>
           <Modal.Title>Add Job</Modal.Title>
         </Modal.Header>
