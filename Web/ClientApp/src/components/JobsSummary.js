@@ -12,7 +12,6 @@ const JobsSummary = (props) => {
     })
   );
 
-  console.log("jobsList in summary: ");
   const dummyData = [
     { x: "Cats", y: 35 },
     { x: "Dogs", y: 40 },

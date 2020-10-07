@@ -4,18 +4,21 @@ import {
   Modal,
   ButtonGroup,
   Button,
-  Alert,
+  // Alert,
+  Spinner,
   Col,
   InputGroup,
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators } from "../store/Jobs";
+import { ToastSuccess } from "./shared/Toasts";
 
-function AddJob() {
+const AddJob = () => {
   const dispatch = useDispatch();
 
   const [show, setShow] = useState(false);
   const [validated, setValidated] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [totalComp, setComp] = useState(0);
   const [totalRate, setRate] = useState(0);
@@ -31,9 +34,13 @@ function AddJob() {
   }, [totalRate, totalHours]);
 
   const addSuccess = useSelector((state) => state.jobs.processedJobSuccess);
+  useEffect(() => {
+    if (validated && !!addSuccess) {
+      handleClose();
+    }
+  }, [validated, addSuccess]);
 
-  const handleClose = (event) => {
-    dispatch(actionCreators.clearAddJob());
+  const handleClose = () => {
     setValidated(false);
     setComp(0);
     setHours(0);
@@ -49,6 +56,7 @@ function AddJob() {
 
     event.preventDefault();
 
+    setIsLoading(true);
     if (form.checkValidity() === false) {
       event.stopPropagation();
     } else {
@@ -68,6 +76,7 @@ function AddJob() {
         })
       );
     }
+    setIsLoading(false);
     setValidated(true);
   };
 
@@ -76,16 +85,8 @@ function AddJob() {
       <Button variant="primary" onClick={handleShow}>
         Add Job
       </Button>
+      <ToastSuccess />
       <Modal show={show} onHide={handleClose} centered size="lg">
-        <Alert
-          show={addSuccess ? true : false}
-          variant="success"
-          dismissible
-          onClose={() => dispatch(actionCreators.clearAddJob())}
-        >
-          Job added successfully!
-        </Alert>
-
         <Modal.Header closeButton>
           <Modal.Title>Add Job</Modal.Title>
         </Modal.Header>
@@ -190,7 +191,19 @@ function AddJob() {
             <Form.Row className="justify-content-center">
               <ButtonGroup size="lg" className="mb-2">
                 <Button variant="primary" type="submit">
-                  Save & Add
+                  {isLoading ? (
+                    <Spinner
+                      as="span"
+                      animation="grow"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                    >
+                      Saving...
+                    </Spinner>
+                  ) : (
+                    "Save & Add"
+                  )}
                 </Button>
                 <Button variant="secondary" onClick={handleClose}>
                   Cancel
@@ -202,6 +215,6 @@ function AddJob() {
       </Modal>
     </>
   );
-}
+};
 
 export default AddJob;

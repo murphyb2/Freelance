@@ -15,9 +15,9 @@ export default () => (
       <Route
         exact
         path="/jobs/:jobId"
-        render={(props) => <JobDetail {...props} id={"hello"} />}
+        component={JobDetail}
+        // render={(props) => <JobDetail {...props} id={"hello"} />}
       />
     </Switch>
-    {/* <Route path="/jobs" component={FetchJobs} /> */}
   </Layout>
 );

@@ -1,42 +1,29 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
 import { actionCreators } from "../store/Jobs";
-import { Spinner, Table } from "react-bootstrap";
+import { Spinner, Table, Button } from "react-bootstrap";
 import AddJob from "./AddJob.js";
 import JobDetail from "./JobDetail";
-import JobsSummary from "./JobsSummary";
+import { Link } from "react-router-dom";
+// import JobsSummary from "./JobsSummary";
 
 const FetchJobs = () => {
-  //state = {
-  //          modalShow: false,
-  //          setModalShow: false
-  //};
-
   const dispatch = useDispatch();
   const jobList = useSelector((state) => state.jobs.jobs);
   const isLoading = useSelector((state) => state.jobs.isLoading);
-  // const startDateIndex = useSelector((state) => state.jobs.startDateIndex);
-
-  // console.log(`startDateIndex: ${startDateIndex}`);
 
   useEffect(() => {
-    // dispatch(actionCreators.requestJobs(startDateIndex));
     dispatch(actionCreators.requestJobs());
   }, []);
-
-  // console.log(`job list: ${jobList}`);
 
   if (!isLoading) {
     return (
       <div>
         <h1>Jobs</h1>
         <p>These are the jobs you've completed this year</p>
-        {/*renderAddJobButton(this.props)*/}
         <AddJob />
         {renderJobsTable(jobList)}
-        <JobsSummary jobsList={jobList} />
-        {/* {renderPagination(startDateIndex)} */}
+        {/* <JobsSummary jobsList={jobList} /> */}
       </div>
     );
   }
@@ -62,10 +49,7 @@ function renderJobsTable(jobList) {
           <th>Compensation</th>
           <th>Start Date</th>
           <th>End Date</th>
-          {/* <th>Paid</th> */}
           <th>Date Invoiced</th>
-          {/* <th>Rate</th> */}
-          {/* <th>Hours Worked</th> */}
           <th></th>
         </tr>
       </thead>
@@ -87,42 +71,19 @@ function renderJobsTable(jobList) {
             <td className="align-middle">
               {new Date(job.endDate).toLocaleDateString()}
             </td>
-            {/* <td>{job.paid ? "Yes" : "No"}</td> */}
             <td className="align-middle">
               {new Date(job.dateInvoiced).toLocaleDateString()}
             </td>
-            {/* <td>{job.rate}</td> */}
-            {/* <td>{job.hoursWorked}</td> */}
             <td className="align-middle">
-              <JobDetail job={job} />
+              <Link to={`/jobs/${job.id}`}>
+                <Button>Details</Button>
+              </Link>
+              {/* <JobDetail job={job} /> */}
             </td>
           </tr>
         ))}
       </tbody>
     </Table>
-  );
-}
-
-function renderPagination(startIndex) {
-  const prevStartDateIndex = (startIndex || 0) - 5;
-  const nextStartDateIndex = (startIndex || 0) + 5;
-
-  return (
-    <p className="clearfix text-center">
-      <Link
-        className="btn btn-default pull-left"
-        to={`/jobs/${prevStartDateIndex}`}
-      >
-        Previous
-      </Link>
-      <Link
-        className="btn btn-default pull-right"
-        to={`/jobs/${nextStartDateIndex}`}
-      >
-        Next
-      </Link>
-      {/* {isLoading ? <span>Loading...</span> : []} */}
-    </p>
   );
 }
 

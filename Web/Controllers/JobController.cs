@@ -43,15 +43,16 @@ namespace Freelance.Controllers
         {
             if (!ValidateJob(jb))
             {
-                return BadRequest("All fields are required");
+                return BadRequest(new { error = "All fields are required"});
+                
             }
 
             var _success = _da.AddJob(new Job(jb));
             if (!_success)
                 return StatusCode(StatusCodes.Status500InternalServerError,
-                    new { success = false, msg = "Could not add Job to database" });
+                    new { error = $"Could not add Job {jb.JobTitle} to database" });
 
-            return Ok(new { success = true });
+            return Ok(new { success = $"Successfully added {jb.JobTitle}!" });
         }
 
         private bool ValidateJob(Job j)
@@ -74,8 +75,19 @@ namespace Freelance.Controllers
         [HttpPut("{id}")]
         public ActionResult UpdateJob(string id, Job jb)
         {
-            Console.WriteLine($"Updating {id}, {jb}");
-            return Ok(new { success=true });
+            if (id != jb.Id)
+            {
+                return BadRequest(new {error = "Updated Job Id and old Id don't match! "});
+            }
+
+            bool success = _da.UpdateJob(jb);
+            if (!success)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new { error = "Could not update Job in database" });
+            } 
+            
+            return Ok(new { success = $"Successfully updated {jb.JobTitle}" });
         }
 
         [HttpDelete("{id}")]
@@ -88,7 +100,7 @@ namespace Freelance.Controllers
             bool success = _da.DeleteJob(id);
             if (!success)
                 return StatusCode(StatusCodes.Status500InternalServerError,
-                    new {success = false, msg = "Could not delete Job from database"});
+                    new {error = "Could not delete Job from database"});
 
             return NoContent();
         }
