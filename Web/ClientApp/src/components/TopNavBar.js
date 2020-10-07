@@ -15,8 +15,7 @@ export default (props) => (
     bg="dark"
     variant="dark"
   >
-    <Container>
-      <Navbar.Brand href="/">Freelance</Navbar.Brand>
+    <Container fluid>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="mr-auto">

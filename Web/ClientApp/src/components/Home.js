@@ -1,10 +1,15 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React from "react";
+import { Jumbotron } from "react-bootstrap";
 
-const Home = props => (
+const Home = () => (
   <div>
-    <p>Welcome to your new single-page application, built with:</p>
+    <Jumbotron>
+      <h1>Freelance</h1>
+      <p>
+        Track your freelace jobs, visualize your income, plan for future work.
+      </p>
+    </Jumbotron>
   </div>
 );
 
-export default connect()(Home);
+export default Home;
