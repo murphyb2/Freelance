@@ -7,7 +7,7 @@ import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
 import { IndexLinkContainer } from "react-router-bootstrap";
 
-export default (props) => (
+export default () => (
   <Navbar
     collapseOnSelect
     expand="xl"

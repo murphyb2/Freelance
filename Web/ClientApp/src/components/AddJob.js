@@ -22,7 +22,7 @@ const AddJob = () => {
   const [totalComp, setComp] = useState(0);
   const [totalRate, setRate] = useState(0);
   const [totalHours, setHours] = useState(0);
-  const calculateComp = (event) => {
+  const calculateComp = event => {
     event.target.id === "hoursWorked"
       ? setHours(event.target.value)
       : setRate(event.target.value);
@@ -32,8 +32,8 @@ const AddJob = () => {
     setComp(Number(totalHours) * Number(totalRate));
   }, [totalRate, totalHours]);
 
-  const addJobError = useSelector((state) => state.jobs.error);
-  const addSuccess = useSelector((state) => state.jobs.processedJobSuccess);
+  const addJobError = useSelector(state => state.jobs.error);
+  const addSuccess = useSelector(state => state.jobs.processedJobSuccess);
   useEffect(() => {
     if (validated && !!addSuccess) {
       handleClose();
@@ -51,13 +51,14 @@ const AddJob = () => {
   };
   const handleShow = () => setShow(true);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = event => {
     const form = event.currentTarget;
 
     event.preventDefault();
 
     setIsLoading(true);
     if (form.checkValidity() === false) {
+      console.log(form.validity);
       event.stopPropagation();
     } else {
       dispatch(
@@ -100,6 +101,9 @@ const AddJob = () => {
                 placeholder="Job Title"
                 required
               />
+              <Form.Control.Feedback type="invalid">
+                Job Title is required
+              </Form.Control.Feedback>
             </Form.Group>
 
             <Form.Group>
@@ -110,6 +114,9 @@ const AddJob = () => {
                 placeholder="Employer"
                 required
               />
+              <Form.Control.Feedback type="invalid">
+                Employer Name is Required
+              </Form.Control.Feedback>
             </Form.Group>
 
             <Form.Group>
@@ -120,6 +127,9 @@ const AddJob = () => {
                 placeholder="Location"
                 required
               />
+              <Form.Control.Feedback type="invalid">
+                Location Name is Required
+              </Form.Control.Feedback>
             </Form.Group>
 
             <Form.Group>
