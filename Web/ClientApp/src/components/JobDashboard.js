@@ -1,15 +1,14 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import { actionCreators } from "../store/Jobs";
 import { Spinner, Table, Button } from "react-bootstrap";
-import AddJob from "./AddJob.js";
-import { Link } from "react-router-dom";
 // import JobsSummary from "./JobsSummary";
 
-const FetchJobs = () => {
+const JobDashboard = () => {
   const dispatch = useDispatch();
-  const jobList = useSelector((state) => state.jobs.jobs);
-  const isLoading = useSelector((state) => state.jobs.isLoading);
+  const jobList = useSelector(state => state.jobs.jobs);
+  const isLoading = useSelector(state => state.jobs.isLoading);
 
   useEffect(() => {
     dispatch(actionCreators.requestJobs());
@@ -20,7 +19,8 @@ const FetchJobs = () => {
       <div>
         <h1>Jobs</h1>
         <p>These are the jobs you've completed this year</p>
-        <AddJob />
+        {/* <AddJob /> */}
+        <Link to="/add">Add Job</Link>
         {renderJobsTable(jobList)}
         {/* <JobsSummary jobsList={jobList} /> */}
       </div>
@@ -37,7 +37,7 @@ const FetchJobs = () => {
   );
 };
 
-function renderJobsTable(jobList) {
+const renderJobsTable = jobList => {
   return (
     <Table responsive striped size="md" variant="dark">
       <thead>
@@ -53,7 +53,7 @@ function renderJobsTable(jobList) {
         </tr>
       </thead>
       <tbody>
-        {jobList.map((job) => (
+        {jobList.map(job => (
           <tr key={job.id} className={job.paid === true ? "" : "bg-warning"}>
             <td className="align-middle">{job.employer}</td>
             <td className="align-middle">{job.jobTitle}</td>
@@ -77,13 +77,12 @@ function renderJobsTable(jobList) {
               <Link to={`/jobs/${job.id}`}>
                 <Button>Details</Button>
               </Link>
-              {/* <JobDetail job={job} /> */}
             </td>
           </tr>
         ))}
       </tbody>
     </Table>
   );
-}
+};
 
-export default FetchJobs;
+export default JobDashboard;

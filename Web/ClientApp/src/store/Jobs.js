@@ -45,7 +45,7 @@ export const actionCreators = {
     }
   },
 
-  requestJobById: (jobId) => async (dispatch, getState) => {
+  requestJobById: jobId => async (dispatch, getState) => {
     // CAN CONVERT THIS TO JUST FILTER EXISTING JOBS IN STATE!!
     // NOT NECESSARY TO PING DB
     dispatch({ type: requestJobByIdType });
@@ -58,7 +58,7 @@ export const actionCreators = {
     dispatch({ type: receiveJobByIdType, jobId, job: job[0] });
   },
 
-  addNewJob: (job) => async (dispatch) => {
+  addNewJob: job => async dispatch => {
     dispatch({ type: addNewJobType });
 
     try {
@@ -91,7 +91,7 @@ export const actionCreators = {
     }
   },
 
-  deleteJob: (jobId) => async (dispatch) => {
+  deleteJob: jobId => async dispatch => {
     dispatch({ type: deleteJobType });
 
     const url = `api/Job/${jobId}`;
@@ -113,14 +113,14 @@ export const actionCreators = {
     }
   },
 
-  clearMessages: () => async (dispatch) => {
+  clearMessages: () => async dispatch => {
     dispatch({ type: clearMesagesType });
   },
 
-  updateJob: (jobId, job) => async (dispatch) => {
+  updateJob: job => async dispatch => {
     dispatch({ type: updateJobType });
 
-    const url = `api/Job/${jobId}`;
+    const url = `api/Job/${job.id}`;
 
     const response = await fetch(url, {
       method: "PUT",
@@ -129,9 +129,10 @@ export const actionCreators = {
         "Content-Type": "application/json",
       },
     });
-    const success = await response.json();
+    const res = await response.json();
 
-    dispatch({ type: jobUpdatedType, success });
+    dispatch({ type: jobUpdatedType, success: res.success, error: res.error });
+    dispatch({ type: receiveJobByIdType, job: res.updatedJob });
   },
 };
 
@@ -195,7 +196,7 @@ export const reducer = (state, action) => {
         processedJobSuccess: action.response,
         error: action.error,
         jobs: action.jobId
-          ? state.jobs.filter((job) => job.id !== action.jobId)
+          ? state.jobs.filter(job => job.id !== action.jobId)
           : state.jobs,
       };
 
@@ -217,7 +218,8 @@ export const reducer = (state, action) => {
       return {
         ...state,
         updatingJob: false,
-        processedJobSuccess: "Successfully updated job!",
+        processedJobSuccess: action.success,
+        error: action.error,
       };
 
     default:

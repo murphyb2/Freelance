@@ -9,7 +9,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 
 const initialState = {
-  showModal: false,
   detailEditView: false,
   validated: false,
   totalComp: 0,
@@ -19,7 +18,7 @@ const initialState = {
   isLoading: true,
 };
 
-const JobDetail = (props) => {
+const JobDetail = props => {
   const dispatch = useDispatch();
   const { jobId } = props.match.params;
 
@@ -27,7 +26,16 @@ const JobDetail = (props) => {
     dispatch(actionCreators.requestJobById(jobId));
   }, [jobId]);
 
-  const fetchingJob = useSelector((state) => state.jobs.isLoading);
+  const fetchingJob = useSelector(state => state.jobs.isLoading);
+  const processedJobSuccess = useSelector(
+    state => state.jobs.processedJobSuccess
+  );
+
+  useEffect(() => {
+    if (!!processedJobSuccess) {
+      toggleView();
+    }
+  }, [processedJobSuccess]);
 
   useEffect(() => {
     if (fetchingJob === false) {
@@ -50,34 +58,10 @@ const JobDetail = (props) => {
     endDate = Date(),
     paid,
     dateInvoiced = Date(),
-  } = useSelector((state) => state.jobs.jobDetail);
+  } = useSelector(state => state.jobs.jobDetail);
 
   const [state, setState] = useState(initialState);
-  const {
-    detailEditView,
-    showModal,
-    validated,
-    totalComp,
-    totalRate,
-    totalHours,
-    isLoading,
-  } = state;
-
-  // Modal handling
-  const handleClose = () => {
-    setState(() => ({
-      ...state,
-      detailEditView: false,
-      validated: false,
-      showModal: false,
-    }));
-  };
-  const handleShow = () => {
-    setState(() => ({
-      ...state,
-      showModal: true,
-    }));
-  };
+  const { detailEditView, isLoading } = state;
 
   const toggleView = () => {
     if (detailEditView === true) {
@@ -158,17 +142,19 @@ const JobDetail = (props) => {
         <div>
           {detailEditView ? (
             <EditJobForm
-              id={jobId}
-              rate={rate}
-              hoursWorked={hoursWorked}
-              employer={employer}
-              jobTitle={jobTitle}
-              location={location}
-              compensation={compensation}
-              startDate={startDate}
-              endDate={endDate}
-              paid={paid}
-              dateInvoiced={dateInvoiced}
+              job={{
+                id,
+                rate,
+                hoursWorked,
+                employer,
+                jobTitle,
+                location,
+                compensation,
+                startDate,
+                endDate,
+                paid,
+                dateInvoiced,
+              }}
             />
           ) : (
             detailView

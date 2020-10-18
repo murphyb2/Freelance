@@ -87,7 +87,7 @@ namespace Freelance.Controllers
                     new { error = "Could not update Job in database" });
             } 
             
-            return Ok(new { success = $"Successfully updated {jb.JobTitle}" });
+            return Ok(new { success = $"Successfully updated {jb.JobTitle}", updatedJob = jb });
         }
 
         [HttpDelete("{id}")]
