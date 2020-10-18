@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Button, Modal, ButtonGroup } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { actionCreators } from "../store/Jobs";
 
 export const DeleteJob = ({ jobName, jobId }) => {
+  let history = useHistory();
   const dispatch = useDispatch();
   const [showDelete, setShowDelete] = useState(false);
 
@@ -12,6 +14,7 @@ export const DeleteJob = ({ jobName, jobId }) => {
 
   const handleDeleteJob = () => {
     dispatch(actionCreators.deleteJob(jobId));
+    history.push("/jobs");
   };
 
   return (

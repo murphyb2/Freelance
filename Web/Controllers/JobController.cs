@@ -31,7 +31,7 @@ namespace Freelance.Controllers
         [HttpGet("{id}")]
         public ActionResult GetJobById(string id)
         {
-            var jobById = _jobs.First(x => x.Id == id);
+            var jobById = _jobs.FirstOrDefault(x => x.Id == id);
 
             if (jobById == null) return NotFound();
             
