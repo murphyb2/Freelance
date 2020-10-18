@@ -55,7 +55,7 @@ export const actionCreators = {
     const response = await fetch(url);
     const job = await response.json();
 
-    dispatch({ type: receiveJobByIdType, jobId, job: job[0] });
+    dispatch({ type: receiveJobByIdType, jobId, job });
   },
 
   addNewJob: job => async dispatch => {
