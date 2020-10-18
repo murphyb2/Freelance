@@ -21,7 +21,11 @@ const JobDashboard = () => {
         <p>These are the jobs you've completed this year</p>
         {/* <AddJob /> */}
         <Link to="/add">Add Job</Link>
-        {renderJobsTable(jobList)}
+        {jobList.length > 0 ? (
+          renderJobsTable(jobList)
+        ) : (
+          <p>There are no jobs to show. Add one to get started!</p>
+        )}
         {/* <JobsSummary jobsList={jobList} /> */}
       </div>
     );
